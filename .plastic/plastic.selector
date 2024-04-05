@@ -1,4 +1,0 @@
-repository "DirtyStrike!@s2121760@cloud"
-  path "/"
-    br "/main"
-    co "/main"
