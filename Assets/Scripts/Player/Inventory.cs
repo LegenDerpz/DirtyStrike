@@ -23,7 +23,6 @@ public class Inventory : MonoBehaviour
                 weapons[i].currentAmmo = currentAmmo;
                 weapons[i].magazineTotalSize = weapons[i].magazineSize * 3;
                 i++;
-                Debug.Log("Weapon " + i);
             }
         }
     }
@@ -40,7 +39,6 @@ public class Inventory : MonoBehaviour
             weapons.Add(null);
         }
         EquipStartingWeapon();
-        Debug.Log(weapons.Count);
     }
 
     private void EquipStartingWeapon(){

@@ -12,9 +12,10 @@ public class Shooting : MonoBehaviour
     float nextFireTime = 0f;
 
     int reloadAmount;
-    bool isReloading = false;
+    public bool isReloading = false;
     [SerializeField]int previousWeapon;
     public bool reloadInterrupted = false;
+    public float reloadProgress;
 
 
     void Update()
@@ -59,7 +60,8 @@ public class Shooting : MonoBehaviour
 
     IEnumerator Reload(){
         isReloading = true;
-        Debug.Log("Reloading...");        
+        Debug.Log("Reloading...");
+
 
         float reloadTime = inventory.GetWeapon(inventory.currentWeaponIndex).reloadTime;
         float elapsedTime = 0f;
@@ -71,6 +73,9 @@ public class Shooting : MonoBehaviour
                 reloadInterrupted = false;
                 yield break;
             }
+
+            reloadProgress = elapsedTime / reloadTime;
+
             elapsedTime += Time.deltaTime;
 
             yield return null;

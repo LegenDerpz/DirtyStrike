@@ -38,7 +38,6 @@ public class PlayerMovement : MonoBehaviour
                 AimDownSights();
             }
         }
-        
 
         if(Input.GetKeyDown(KeyCode.Alpha1)){
             SelectWeapon(0);
@@ -77,9 +76,6 @@ public class PlayerMovement : MonoBehaviour
         fieldOfView.SetOrigin(transform.position);
     }
 
-    void SendMovementUpdate(){
-        PlayerMovementData data = new PlayerMovementData(rb.position, rb.velocity);
-    }
     public float SetMoveSpeed(float moveSpeed){
         this.moveSpeed = moveSpeed;
         return moveSpeed;
@@ -132,6 +128,9 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Current Weapon: " + currentWeapon.name);
         }catch(IndexOutOfRangeException){}catch(NullReferenceException){}catch(ArgumentOutOfRangeException){}
         
+    }
+    void SendMovementUpdate(){
+        PlayerMovementData data = new PlayerMovementData(rb.position, rb.velocity);
     }
 }
 
