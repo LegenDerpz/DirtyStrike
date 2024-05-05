@@ -8,6 +8,8 @@ public class Weapon : ScriptableObject
     public new string name;
     public float damage;
     public int fireRate;
+    public float bulletSpread;
+    public float bulletSpreadMovingModifier;
     public int currentAmmo;
     public float reloadTime;
     public int magazineSize;

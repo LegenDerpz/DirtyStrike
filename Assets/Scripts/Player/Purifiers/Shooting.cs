@@ -16,7 +16,7 @@ public class Shooting : MonoBehaviour
     [SerializeField]int previousWeapon;
     public bool reloadInterrupted = false;
     public float reloadProgress;
-
+    public float movementThreshold = 0.01f;
 
     void Update()
     {        
@@ -52,16 +52,39 @@ public class Shooting : MonoBehaviour
     }
         
     void Shoot(){
-        GameObject waterBullet = Instantiate(waterBulletPrefab, firePoint.position, firePoint.rotation);
+        Vector2 playerMovement = GetComponent<Rigidbody2D>().velocity;
+        bool isMoving = playerMovement.magnitude > movementThreshold;
+
+        float bulletSpread = UnityEngine.Random.Range(0f, inventory.GetWeapon(inventory.currentWeaponIndex).bulletSpread);
+
+        /*
+        float movementSpreadModifier = inventory.GetWeapon(inventory.currentWeaponIndex).bulletSpreadMovingModifier;
+
+        if(isMoving){
+            bulletSpread *= movementSpreadModifier;
+        }
+        */
+
+        Vector2 baseDirection = firePoint.up;
+
+        float spreadAngle = bulletSpread * Mathf.Deg2Rad;
+        Vector2 spreadOffset = UnityEngine.Random.insideUnitCircle * spreadAngle;
+
+        Vector2 targetDirection = baseDirection + spreadOffset;
+        targetDirection.Normalize();
+
+        float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
+        Quaternion spreadRotation = Quaternion.Euler(0, 0, angle-90f);
+
+        GameObject waterBullet = Instantiate(waterBulletPrefab, firePoint.position, spreadRotation);
         Rigidbody2D rb = waterBullet.GetComponent<Rigidbody2D>();
-        rb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
+        rb.AddForce(targetDirection * bulletForce, ForceMode2D.Impulse);
         inventory.GetWeapon(inventory.currentWeaponIndex).currentAmmo--;
     }
 
     IEnumerator Reload(){
         isReloading = true;
         Debug.Log("Reloading...");
-
 
         float reloadTime = inventory.GetWeapon(inventory.currentWeaponIndex).reloadTime;
         float elapsedTime = 0f;
