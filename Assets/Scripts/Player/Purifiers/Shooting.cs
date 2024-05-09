@@ -7,16 +7,19 @@ public class Shooting : MonoBehaviour
     public Transform firePoint;
     public Inventory inventory;
     public GameObject waterBulletPrefab;
+    public Rigidbody2D rb;
 
     public float bulletForce = 30f;
     float nextFireTime = 0f;
 
     int reloadAmount;
     public bool isReloading = false;
-    [SerializeField]int previousWeapon;
+    int previousWeapon;
     public bool reloadInterrupted = false;
     public float reloadProgress;
-    public float movementThreshold = 0.01f;
+
+    Vector2 lastPosition;
+    bool isMoving = false;
 
     void Update()
     {        
@@ -48,22 +51,26 @@ public class Shooting : MonoBehaviour
                 }
             }
             previousWeapon = inventory.currentWeaponIndex;
+            
+            if(lastPosition != rb.position){
+                isMoving = true;
+            }else{
+                isMoving = false;
+            }
         }catch(NullReferenceException){}
+    }
+
+    void LateUpdate(){
+        lastPosition = rb.position;
     }
         
     void Shoot(){
-        Vector2 playerMovement = GetComponent<Rigidbody2D>().velocity;
-        bool isMoving = playerMovement.magnitude > movementThreshold;
-
         float bulletSpread = UnityEngine.Random.Range(0f, inventory.GetWeapon(inventory.currentWeaponIndex).bulletSpread);
-
-        /*
         float movementSpreadModifier = inventory.GetWeapon(inventory.currentWeaponIndex).bulletSpreadMovingModifier;
 
         if(isMoving){
             bulletSpread *= movementSpreadModifier;
         }
-        */
 
         Vector2 baseDirection = firePoint.up;
 

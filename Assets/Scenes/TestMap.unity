@@ -1234,6 +1234,7 @@ GameObject:
   - component: {fileID: 1334742587}
   - component: {fileID: 1334742588}
   - component: {fileID: 1334742589}
+  - component: {fileID: 1334742590}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1368,12 +1369,11 @@ MonoBehaviour:
   firePoint: {fileID: 1866714094}
   inventory: {fileID: 1334742587}
   waterBulletPrefab: {fileID: 6549975000145401404, guid: 10596f351e275f94dab1b2220a135453, type: 3}
+  rb: {fileID: 1334742582}
   bulletForce: 30
   isReloading: 0
-  previousWeapon: 0
   reloadInterrupted: 0
   reloadProgress: 0
-  movementThreshold: 0.01
 --- !u!58 &1334742586
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1459,6 +1459,18 @@ MonoBehaviour:
   currentAmmo: {fileID: 1454622500}
   ammoIcon: {fileID: 73228622}
   reloadCircle: {fileID: 1501193233}
+--- !u!114 &1334742590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334742580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d68b14b75bc413a48ab912e05fed7c91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1442923386
 GameObject:
   m_ObjectHideFlags: 0

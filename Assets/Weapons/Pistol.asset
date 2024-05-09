@@ -17,6 +17,8 @@ MonoBehaviour:
   name: Pistol
   damage: 20
   fireRate: 3
+  bulletSpread: 10
+  bulletSpreadMovingModifier: 5
   currentAmmo: 12
   reloadTime: 3
   magazineSize: 12
@@ -26,5 +28,6 @@ MonoBehaviour:
   cameraScoped: 3.2
   cameraUnscoped: 3
   moveSpeed: 3.5
+  cost: 0
   weaponType: 1
   weaponClass: 1

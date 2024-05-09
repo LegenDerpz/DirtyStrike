@@ -19,6 +19,7 @@ public class Weapon : ScriptableObject
     public float cameraScoped;
     public float cameraUnscoped;
     public float moveSpeed;
+    public int cost;
     public WeaponType weaponType;
     public WeaponClass weaponClass;
 }
