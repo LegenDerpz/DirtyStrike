@@ -5,8 +5,10 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public List<Weapon> weapons;
-    public int maxInventorySlots = 3;
     public WeaponShop shop;
+    public Weapon dirtBomb;
+    public GameObject dirtBombPrefab;
+    public int maxInventorySlots = 4;
     public int currentWeaponIndex = 0;
     int currentAmmo;
 
@@ -29,7 +31,9 @@ public class Inventory : MonoBehaviour
 
     private void Update(){
         try{
-            currentAmmo = weapons[currentWeaponIndex].currentAmmo;
+            if(GetWeapon(currentWeaponIndex) != null){
+                currentAmmo = weapons[currentWeaponIndex].currentAmmo;
+            }
         }catch(IndexOutOfRangeException){}catch(ArgumentOutOfRangeException){}
     }
 
@@ -89,13 +93,17 @@ public class Inventory : MonoBehaviour
 
     public bool IsGun(){
         try{
-            if(weapons[currentWeaponIndex].weaponClass == WeaponClass.Primary){
+            if(weapons[currentWeaponIndex].weaponClass == WeaponClass.Primary && GetWeapon(currentWeaponIndex) != null){
                 return true;
-            }else if(weapons[currentWeaponIndex].weaponClass == WeaponClass.Secondary){
+            }else if(weapons[currentWeaponIndex].weaponClass == WeaponClass.Secondary && GetWeapon(currentWeaponIndex) != null){
                 return true;
             }else{
                 return false;
             }
-        }catch(ArgumentOutOfRangeException){return false;}
+        }catch(ArgumentOutOfRangeException){return false;}catch(NullReferenceException){return false;}
+    }
+
+    public void TakeBomb(){
+        weapons[3] = dirtBomb;
     }
 }

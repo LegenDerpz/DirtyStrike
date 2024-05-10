@@ -2,7 +2,7 @@ using UnityEngine;
 using Cinemachine;
 using System;
 
-public class PlayerMovement : MonoBehaviour
+public class Purifier : MonoBehaviour
 {
     [SerializeField] private FieldOfView fieldOfView;
     public Inventory inventory;
@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if(!isAiming){
+        if(!isAiming && inventory.GetWeapon(inventory.currentWeaponIndex) != null){
             moveSpeed = inventory.GetWeapon(inventory.currentWeaponIndex).moveSpeed;
         }
         movement.x = Input.GetAxisRaw("Horizontal");
@@ -53,7 +53,6 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetAxis("Mouse ScrollWheel") > 0f){
             SelectWeapon(++inventory.currentWeaponIndex);
         }
-        
     }
 
     void LateUpdate(){
@@ -63,10 +62,13 @@ public class PlayerMovement : MonoBehaviour
         if(inventory.currentWeaponIndex > inventory.weapons.Count - 1){
             SelectWeapon(inventory.weapons.Count - 1);
         }
+        if(inventory.GetWeapon(inventory.currentWeaponIndex) == null){
+            SelectWeapon(inventory.weapons.Count - 2);
+        }
     }
 
     void FixedUpdate(){
-        rb.MovePosition(rb.position + movement * inventory.GetWeapon(inventory.currentWeaponIndex).moveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
 
         lookDir = mousePos - rb.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
@@ -76,9 +78,8 @@ public class PlayerMovement : MonoBehaviour
         fieldOfView.SetOrigin(transform.position);
     }
 
-    public float SetMoveSpeed(float moveSpeed){
+    public void SetMoveSpeed(float moveSpeed){
         this.moveSpeed = moveSpeed;
-        return moveSpeed;
     }
 
     public void CameraZoomIn(float lensOrthoSize, float m_XDamping, float m_YDamping){
@@ -116,30 +117,19 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void SelectWeapon(int index){
-        /*
-        if(index < 0 || index >= inventory.weapons.Count){
-            throw new IndexOutOfRangeException("Index out of bounds!");
-        }*/
         try{
             currentWeapon = inventory.GetWeapon(inventory.currentWeaponIndex);
             inventory.currentWeaponIndex = index;
             CameraZoomOut(currentWeapon.cameraUnscoped, 1.5f, 1.5f);
 
-            Debug.Log("Current Weapon: " + currentWeapon.name);
+            //Debug.Log("Current Weapon: " + currentWeapon.name);
         }catch(IndexOutOfRangeException){}catch(NullReferenceException){}catch(ArgumentOutOfRangeException){}
-        
     }
-    void SendMovementUpdate(){
-        PlayerMovementData data = new PlayerMovementData(rb.position, rb.velocity);
-    }
-}
 
-public class PlayerMovementData{
-    public Vector2 position;
-    public Vector2 velocity;
-
-    public PlayerMovementData(Vector2 position, Vector2 velocity = default){
-        this.position = position;
-        this.velocity = velocity;
+    public bool GetDefuseInput(){
+        while(Input.GetKey(KeyCode.F)){
+            return true;
+        }
+        return false;
     }
 }

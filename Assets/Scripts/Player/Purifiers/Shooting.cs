@@ -6,11 +6,13 @@ public class Shooting : MonoBehaviour
 {
     public Transform firePoint;
     public Inventory inventory;
+    public DirtBomb dirtBomb;
     public GameObject waterBulletPrefab;
     public Rigidbody2D rb;
 
     public float bulletForce = 30f;
     float nextFireTime = 0f;
+    public bool isShooting = false;
 
     int reloadAmount;
     public bool isReloading = false;
@@ -19,7 +21,7 @@ public class Shooting : MonoBehaviour
     public float reloadProgress;
 
     Vector2 lastPosition;
-    bool isMoving = false;
+    public bool isMoving = false;
 
     void Update()
     {        
@@ -35,7 +37,10 @@ public class Shooting : MonoBehaviour
             if(Time.time >= nextFireTime && inventory.GetWeapon(inventory.currentWeaponIndex).currentAmmo > 0){
                 if(Input.GetButton("Fire1") && !isReloading){
                     Shoot();
+                    isShooting = true;
                     nextFireTime = Time.time + 1f / inventory.GetWeapon(inventory.currentWeaponIndex).fireRate;
+                }else{
+                    isShooting = false;
                 }
             }
         
@@ -60,7 +65,7 @@ public class Shooting : MonoBehaviour
         }catch(NullReferenceException){}
     }
 
-    void LateUpdate(){
+    void FixedUpdate(){
         lastPosition = rb.position;
     }
         
@@ -70,6 +75,8 @@ public class Shooting : MonoBehaviour
 
         if(isMoving){
             bulletSpread *= movementSpreadModifier;
+        }else{
+            bulletSpread = UnityEngine.Random.Range(0f, inventory.GetWeapon(inventory.currentWeaponIndex).bulletSpread);
         }
 
         Vector2 baseDirection = firePoint.up;

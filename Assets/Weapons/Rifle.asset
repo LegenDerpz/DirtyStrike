@@ -17,9 +17,9 @@ MonoBehaviour:
   name: Assault Rifle
   damage: 20
   fireRate: 7
-  bulletSpread: 20
-  bulletSpreadMovingModifier: 3
-  currentAmmo: 12
+  bulletSpread: 10
+  bulletSpreadMovingModifier: 3.5
+  currentAmmo: 25
   reloadTime: 4
   magazineSize: 25
   magazineTotalSize: 75

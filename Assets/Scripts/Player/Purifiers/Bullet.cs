@@ -12,13 +12,13 @@ public class Bullet : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collider){        
         //GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
 
-        TerroDirt terroDirt = collider.gameObject.GetComponent<TerroDirt>();
-        if(terroDirt != null){
+        PlayerStats player = collider.gameObject.GetComponent<PlayerStats>();
+        if(player != null){
             if(Random.value <= critChance){
                 Debug.Log("Critical Hit!");
-                terroDirt.TakeDamage(damage * critMultiplier);
+                player.TakeDamage(damage * critMultiplier);
             }else{
-                terroDirt.TakeDamage(damage);
+                player.TakeDamage(damage);
             }
         }
         

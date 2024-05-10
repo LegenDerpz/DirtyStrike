@@ -11,7 +11,8 @@ public class PlayerHUD : MonoBehaviour
     public TextMeshProUGUI currentAmmo;
     public Image ammoIcon;
     public Slider reloadCircle;
-
+    public Slider plantCircle;
+    public Slider defusingCirle;
     
 
     void Update(){
@@ -34,6 +35,26 @@ public class PlayerHUD : MonoBehaviour
             if(!shooting.isReloading && inv.IsGun()){
                 ammoIcon.enabled = true;
                 reloadCircle.gameObject.SetActive(false);
+            }  
+        }catch(NullReferenceException){}
+    }
+
+    void FixedUpdate(){
+        try{
+            //TerroDirt Planting
+            if(FindObjectOfType<TerroDirt>().isPlanting){
+                plantCircle.gameObject.SetActive(true);
+                plantCircle.value = FindObjectOfType<TerroDirt>().plantProgress;
+            }else{
+                plantCircle.gameObject.SetActive(false);
+            }
+
+            //Purifier Defusing
+            if(FindObjectOfType<DirtBomb>().isDefusing && FindObjectOfType<DirtBomb>() != null){
+                defusingCirle.gameObject.SetActive(true);
+                defusingCirle.value = FindObjectOfType<DirtBomb>().defuseProgress;
+            }else{
+                defusingCirle.gameObject.SetActive(false);
             }
         }catch(NullReferenceException){}
     }
