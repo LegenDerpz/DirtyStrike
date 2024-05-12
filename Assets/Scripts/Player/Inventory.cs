@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
+[System.Serializable]
 public class Inventory : MonoBehaviour
 {
     public List<Weapon> weapons;
@@ -15,18 +17,18 @@ public class Inventory : MonoBehaviour
     private void Start(){
         weapons =  new List<Weapon>();
         LoadWeapons();
-        weapons[0] = shop.rifle;
-        weapons[2] = shop.knife;
-
-        int i = 0;
-        foreach(Weapon weapon in weapons){
-            if(weapon != null && (weapon.weaponType != WeaponType.Melee || weapon.weaponType != WeaponType.Bomb)){
-                currentAmmo = weapons[i].magazineSize;
-                weapons[i].currentAmmo = currentAmmo;
-                weapons[i].magazineTotalSize = weapons[i].magazineSize * 3;
-                i++;
+        //weapons[0] = shop.rifle;
+        
+        try{
+            int i = 0;
+            for(i = 0; i < weapons.Count; i++){
+                if(weapons[i] != null){
+                    currentAmmo = weapons[i].magazineSize;
+                    weapons[i].currentAmmo = currentAmmo;
+                    weapons[i].magazineTotalSize = weapons[i].magazineSize * 3;
+                }
             }
-        }
+        }catch(NullReferenceException){}
     }
 
     private void Update(){
@@ -37,16 +39,39 @@ public class Inventory : MonoBehaviour
         }catch(IndexOutOfRangeException){}catch(ArgumentOutOfRangeException){}
     }
 
-    private void LoadWeapons(){
+    public void LoadWeapons(){
         weapons.Clear();
+
         for(int i = 0; i < maxInventorySlots; i++){
-            weapons.Add(null);
+                weapons.Add(null);
         }
+        
+        string weaponDataString = PlayerData.LoadWeaponData();
+
+        if(weaponDataString != null){
+            CurrentWeaponData currentWeaponData = JsonUtility.FromJson<CurrentWeaponData>(weaponDataString);   
+            
+            if(currentWeaponData.hasDiedLastRound){
+                Debug.Log("Died Last Round");
+            }else{
+                GetComponent<Inventory>().weapons[0] = currentWeaponData.primaryWeapon;
+                GetComponent<Inventory>().weapons[1] = currentWeaponData.secondaryWeapon;
+                Debug.Log("Didn't Die Last Round");
+                Debug.Log(currentWeaponData.primaryWeapon);
+                Debug.Log(currentWeaponData.secondaryWeapon);
+            }
+        }
+
         EquipStartingWeapon();
+        weapons[2] = shop.knife;
+        weapons[3] = null;
+        GetComponent<PlayerStats>().isDead = false;
     }
 
     private void EquipStartingWeapon(){
-        weapons[1] = shop.classicPistol;
+        if(weapons[1] == null){
+            weapons[1] = shop.classicPistol;
+        }
     }
 
     public void AddWeapon(Weapon newWeapon){

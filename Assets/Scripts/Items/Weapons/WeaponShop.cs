@@ -25,4 +25,7 @@ public class WeaponShop : MonoBehaviour
     public void buyWeaponPrimary(){
         
     }
+    public void buyRifle(){
+        GetComponent<Inventory>().weapons[0] = rifle;
+    }
 }
