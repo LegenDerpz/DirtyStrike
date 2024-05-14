@@ -1947,7 +1947,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f600d61dc3ebc047b085f612e1c862c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
+  purifierScore: 0
+  terrodirtScore: 0
 --- !u!4 &1243364318
 Transform:
   m_ObjectHideFlags: 0
@@ -36558,6 +36559,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5508375394122603596, guid: 2abb94dc940dc9b49822ee3c1de89970, type: 3}
+      propertyPath: explodeTime
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5508375394122603596, guid: 2abb94dc940dc9b49822ee3c1de89970, type: 3}
       propertyPath: spriteRenderer
       value: 

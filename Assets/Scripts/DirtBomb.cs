@@ -9,12 +9,26 @@ public class DirtBomb : MonoBehaviour
     //TerroDirts
     public bool isPlanted = false;
     public float plantTime = 4f;
+    float explodeTime = 10f;
+    float elapsedTime = 0f;
+    public bool hasExploded = false;
     
     //Purifiers
     public float defuseTime = 7.5f;
     public bool isDefusing = false;
     public float defuseProgress;
     public bool defused = false;
+
+    void Update(){
+        if(isPlanted && !hasExploded){
+            elapsedTime += Time.deltaTime;
+
+            if(elapsedTime >= explodeTime){
+                Debug.Log("Bomb has exploded.");
+                StartCoroutine(Explode());
+            }
+        }
+    }
 
     void OnTriggerEnter2D(Collider2D collider){
         if(collider.tag == "TerroDirt" && !isPlanted){
@@ -44,6 +58,14 @@ public class DirtBomb : MonoBehaviour
         spriteRenderer.color = new Color(0.3867925f, 0.1511306f, 0.08940016f, 1f);
     }
 
+    IEnumerator Explode(){
+        hasExploded = true;
+        FindObjectOfType<GameLoop>().AddTerroDirtScore();
+
+        yield return new WaitForSeconds(5f);
+        
+        FindObjectOfType<GameLoop>().RoundEnd();
+    }
 
     IEnumerator Defuse(){
         isDefusing = true;

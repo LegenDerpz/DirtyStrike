@@ -18,6 +18,14 @@ public class PlayerStats : MonoBehaviour
     public void Die(){
         //Instantiate(deathEffect, transform.position, Quaternion.identity);
         isDead = true;
-        Destroy(gameObject);
+
+        FindObjectOfType<GameLoop>().FindWinCondition();
+        
+        if(gameObject.tag == "Purifier"){
+            GetComponent<Purifier>().enabled = false;
+        }else if(gameObject.tag == "TerroDirt"){
+            GetComponent<TerroDirt>().enabled = false;
+        }
+        //Destroy(gameObject);
     }
 }
