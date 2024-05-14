@@ -45,7 +45,7 @@ public class Inventory : MonoBehaviour
         for(int i = 0; i < maxInventorySlots; i++){
                 weapons.Add(null);
         }
-        
+
         string weaponDataString = PlayerData.LoadWeaponData();
 
         if(weaponDataString != null){
@@ -107,7 +107,7 @@ public class Inventory : MonoBehaviour
             }
         }
         return count;
-    } 
+    }
 
     public int GetMagazineSize(){
         return weapons[currentWeaponIndex].magazineSize;

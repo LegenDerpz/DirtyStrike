@@ -26,6 +26,6 @@ public class WeaponShop : MonoBehaviour
         
     }
     public void buyRifle(){
-        GetComponent<Inventory>().weapons[0] = rifle;
+        gameObject.GetComponent<Inventory>().weapons[0] = rifle;
     }
 }

@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e6fedc2472449cead18ef23b5cb30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Library:
+  - m_Name: Head
+    m_Hash: 130111906
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Purifier Head
+      m_Hash: 693528083
+      m_Sprite: {fileID: 6432719974564837514, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 6432719974564837514, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    - m_Name: TerroDirt Head
+      m_Hash: 852046172
+      m_Sprite: {fileID: -1285776129717562604, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1285776129717562604, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 2
+  - m_Name: R_Hand
+    m_Hash: 752050920
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Purifier Right Hand
+      m_Hash: 976008786
+      m_Sprite: {fileID: -6084590965425335226, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -6084590965425335226, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    - m_Name: Purifier Right Hand 2
+      m_Hash: 906327198
+      m_Sprite: {fileID: 8840275382007468268, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 8840275382007468268, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    - m_Name: TerroDirt Right Hand
+      m_Hash: 198913427
+      m_Sprite: {fileID: -3375986042713028328, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -3375986042713028328, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    - m_Name: TerroDirt Right Hand 2
+      m_Hash: 54077866
+      m_Sprite: {fileID: 8973445071344872961, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 8973445071344872961, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 4
+  - m_Name: L_Hand
+    m_Hash: 353304835
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Purifier Left Hand
+      m_Hash: 345216898
+      m_Sprite: {fileID: -8060312817075455243, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -8060312817075455243, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    - m_Name: TerroDirt Left Hand
+      m_Hash: 938087507
+      m_Sprite: {fileID: 370071341410380476, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 370071341410380476, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 2
+  - m_Name: L_Arm
+    m_Hash: 387824839
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Purifier Left Arm
+      m_Hash: 714512121
+      m_Sprite: {fileID: 5874481564549586462, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 5874481564549586462, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    - m_Name: Purifier Left Arm Rested
+      m_Hash: 174460413
+      m_Sprite: {fileID: -6759413956344079058, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -6759413956344079058, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    - m_Name: TerroDirt Left Arm
+      m_Hash: 175306766
+      m_Sprite: {fileID: -6242692734942794937, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -6242692734942794937, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    - m_Name: TerroDirt Left Arm Rested
+      m_Hash: 159260570
+      m_Sprite: {fileID: -995116568412071846, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -995116568412071846, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 4
+  - m_Name: R_Arm
+    m_Hash: 147690788
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Purifier Right Arm
+      m_Hash: 565888900
+      m_Sprite: {fileID: 5044503287791652295, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 5044503287791652295, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    - m_Name: TerroDirt Right Arm
+      m_Hash: 46351445
+      m_Sprite: {fileID: 3548015476287775829, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 3548015476287775829, guid: dace2d6746023b048a7994bf22f88259, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 2
+  m_PrimaryLibraryGUID: 
+  m_ModificationHash: 638513188691673999
+  m_Version: 1
