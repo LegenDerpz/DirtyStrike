@@ -84,7 +84,7 @@ public class DirtBomb : MonoBehaviour
             if (elapsedTime >= defuseTime){
                 CancelDefuse();
                 defused = true;
-                //EndRound();
+                FindObjectOfType<GameLoop>().FindWinCondition();
                 yield break;
             }
             

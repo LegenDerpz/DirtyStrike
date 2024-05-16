@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WeaponShop : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class WeaponShop : MonoBehaviour
     public Weapon classicPistol;
     public Weapon rifle;
     public Weapon knife;
+
+    bool shopOpened = false;
 
     void Start(){
         primaryShop = new List<Weapon>
@@ -20,6 +23,16 @@ public class WeaponShop : MonoBehaviour
         {
             classicPistol
         };
+    }
+
+    void Update(){
+        if(Input.GetKeyDown(KeyCode.B) && !shopOpened && !FindObjectOfType<RoundTimer>().buyPhaseEnded){
+            SceneManager.LoadSceneAsync("WeaponShop", LoadSceneMode.Additive);
+            shopOpened = true;
+        }else if(Input.GetKeyDown(KeyCode.B) && shopOpened){
+            SceneManager.UnloadSceneAsync("WeaponShop");
+            shopOpened = false;
+        }
     }
 
     public void buyWeaponPrimary(){

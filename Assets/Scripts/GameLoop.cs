@@ -9,6 +9,10 @@ public class GameLoop : MonoBehaviour
     public int purifierScore = 0;
     public int terrodirtScore = 0;
 
+
+    void Awake(){
+        Debug.Log("Game Loop Initialized.");
+    }
     public void RoundStart(){
         //Add Credits
         //Players go back to spawnpoint
@@ -33,8 +37,13 @@ public class GameLoop : MonoBehaviour
 
     public void FindWinCondition(){
         for(int i = 0; i< FindObjectsOfType<PlayerStats>().Length; i++){
-            if(FindObjectsOfType<PlayerStats>()[i].isDead && FindObjectsOfType<PlayerData>()[i].tag == "Purifier"){
+            if((FindObjectsOfType<PlayerStats>()[i].isDead && FindObjectsOfType<PlayerData>()[i].tag == "Purifier")
+                || FindObjectOfType<DirtBomb>().hasExploded){
                 AddTerroDirtScore();
+                RoundEnd();
+            }else if((FindObjectsOfType<PlayerStats>()[i].isDead && FindObjectsOfType<PlayerData>()[i].tag == "TerroDirt"
+                && !FindObjectOfType<DirtBomb>().isPlanted) || FindObjectOfType<DirtBomb>().defused){
+                AddPurifierScore();
                 RoundEnd();
             }
         }
