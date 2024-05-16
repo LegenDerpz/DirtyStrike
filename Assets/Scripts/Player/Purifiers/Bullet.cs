@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public Rigidbody2D rb;
     public float damage = 20f;
     public float critChance = 0.1f;
     public float critMultiplier = 1.5f;
@@ -24,5 +25,18 @@ public class Bullet : MonoBehaviour
         
         //Destroy(effect, 0.5f);
         Destroy(gameObject);
+    }
+
+    public Vector2 GetBulletPosition(){
+        return rb.position;
+    }
+    public Quaternion GetBulletRotation(){
+        return transform.rotation;
+    }
+    public Transform GetBulletTransform(){
+        return rb.transform;
+    }
+    public float GetBulletDamage(){
+        return damage;
     }
 }

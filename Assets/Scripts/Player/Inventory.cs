@@ -12,7 +12,7 @@ public class Inventory : MonoBehaviour
     public GameObject dirtBombPrefab;
     public int maxInventorySlots = 4;
     public int currentWeaponIndex = 0;
-    int currentAmmo;
+    public int currentAmmo;
 
     private void Start(){
         weapons =  new List<Weapon>();
@@ -99,6 +99,10 @@ public class Inventory : MonoBehaviour
         }
         return null;
     }
+    public Weapon GetWeapon(){
+        return weapons[currentWeaponIndex];
+    }
+
     private int GetWeaponCount(WeaponClass weaponClass){
         int count = 0;
         foreach(Weapon weapon in weapons){

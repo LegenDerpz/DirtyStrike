@@ -6,7 +6,6 @@ public class Shooting : MonoBehaviour
 {
     public Transform firePoint;
     public Inventory inventory;
-    public DirtBomb dirtBomb;
     public GameObject waterBulletPrefab;
     public Rigidbody2D rb;
 
