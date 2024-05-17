@@ -1,6 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.U2D.Animation;
 
 public class PlayerData : MonoBehaviour
 {
@@ -13,9 +18,40 @@ public class PlayerData : MonoBehaviour
     public float rotation;
     public Weapon currentWeapon;
 
+    public GameObject head, rightArm, rightHand, leftArm, leftHand;
+    SpriteResolver sr_head, sr_rightArm, sr_rightHand, sr_leftArm, sr_leftHand;
+
+    private int layer = 10;
+
     void Start()
     {
         Init();
+
+        sr_head = head.GetComponent<SpriteResolver>();
+        sr_rightArm = rightArm.GetComponent<SpriteResolver>();
+        sr_rightHand = rightHand.GetComponent<SpriteResolver>();
+        sr_leftArm = leftArm.GetComponent<SpriteResolver>();
+        sr_leftHand = leftHand.GetComponent<SpriteResolver>();
+
+        if(CompareTag("Purifier")){
+            sr_head.SetCategoryAndLabel("Head", "Purifier Head");
+            sr_rightArm.SetCategoryAndLabel("R_Arm", "Purifier Right Arm");
+            sr_rightHand.SetCategoryAndLabel("R_Hand", "Purifier Right Hand");
+            sr_leftArm.SetCategoryAndLabel("L_Arm", "Purifier Left Arm");
+            sr_leftHand.SetCategoryAndLabel("L_Hand", "Purifier Left Hand");
+            GetComponent<Purifier>().enabled = true;
+            GetComponent<Combat>().layerMask |= 2 << layer; //Can Only Damage TerroDirt Players
+            gameObject.layer = 10;
+        }else if(CompareTag("TerroDirt")){
+            sr_head.SetCategoryAndLabel("Head", "TerroDirt Head");
+            sr_rightArm.SetCategoryAndLabel("R_Arm", "TerroDirt Right Arm");
+            sr_rightHand.SetCategoryAndLabel("R_Hand", "TerroDirt Right Hand");
+            sr_leftArm.SetCategoryAndLabel("L_Arm", "TerroDirt Left Arm");
+            sr_leftHand.SetCategoryAndLabel("L_Hand", "TerroDirt Left Hand");
+            GetComponent<TerroDirt>().enabled = true;
+            GetComponent<Combat>().layerMask |= 1 << layer; //Can Only Damage Purifier Players
+            gameObject.layer = 11;
+        }
     }
 
     public static void Init()

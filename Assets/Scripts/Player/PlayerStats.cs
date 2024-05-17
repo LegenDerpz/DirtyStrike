@@ -3,14 +3,19 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     public float health = 1000f;
+    float currentHealth;
     public GameObject deathEffect;
 
     public bool isDead = false;
 
-    public void TakeDamage(float damage){
-        health -= damage;
+    void Start(){
+        currentHealth = health;
+    }
 
-        if(health <= 0){
+    public void TakeDamage(float damage){
+        currentHealth -= damage;
+
+        if(currentHealth <= 0){
             Die();
         }
     }

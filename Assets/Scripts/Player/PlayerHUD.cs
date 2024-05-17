@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerHUD : MonoBehaviour
 {
     public Inventory inv;
-    public Shooting shooting;
+    public Combat combat;
     public TextMeshProUGUI weapon;
     public TextMeshProUGUI currentAmmo;
     public Image ammoIcon;
@@ -27,12 +27,12 @@ public class PlayerHUD : MonoBehaviour
                 ammoIcon.enabled = true;
             }
 
-            if(shooting.isReloading && inv.IsGun()){
+            if(combat.isReloading && inv.IsGun()){
                 ammoIcon.enabled = false;
                 reloadCircle.gameObject.SetActive(true);
-                reloadCircle.value = shooting.reloadProgress;
+                reloadCircle.value = combat.reloadProgress;
             }
-            if(!shooting.isReloading && inv.IsGun()){
+            if(!combat.isReloading && inv.IsGun()){
                 ammoIcon.enabled = true;
                 reloadCircle.gameObject.SetActive(false);
             }  

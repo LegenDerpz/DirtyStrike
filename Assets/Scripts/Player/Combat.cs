@@ -2,16 +2,20 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Shooting : MonoBehaviour
+public class Combat : MonoBehaviour
 {
     public Transform firePoint;
     public Inventory inventory;
-    public GameObject waterBulletPrefab;
     public Rigidbody2D rb;
+    public AnimationHandler anim;
 
+    //General
+    float nextAttackTime = 0f;
+    public bool isAttacking = false;
+
+    //Shooting
+    public GameObject waterBulletPrefab;
     public float bulletForce = 30f;
-    float nextFireTime = 0f;
-    public bool isShooting = false;
 
     int reloadAmount;
     public bool isReloading = false;
@@ -19,6 +23,11 @@ public class Shooting : MonoBehaviour
     public bool reloadInterrupted = false;
     public float reloadProgress;
 
+    //Melee
+    public LayerMask layerMask;
+    public float attackRange = 0.5f;
+
+    //Transform
     Vector2 lastPosition;
     public bool isMoving = false;
 
@@ -33,13 +42,18 @@ public class Shooting : MonoBehaviour
                 }
             }
 
-            if(Time.time >= nextFireTime && inventory.GetWeapon(inventory.currentWeaponIndex).currentAmmo > 0){
+            if(Time.time >= nextAttackTime && inventory.GetWeapon().weaponType != WeaponType.Bomb){
                 if(Input.GetButton("Fire1") && !isReloading){
-                    Shoot();
-                    isShooting = true;
-                    nextFireTime = Time.time + 1f / inventory.GetWeapon(inventory.currentWeaponIndex).fireRate;
+                    if(inventory.IsGun() && inventory.GetWeapon(inventory.currentWeaponIndex).currentAmmo > 0){
+                        Shoot();
+                    }else if(inventory.GetWeapon().weaponType == WeaponType.Melee){
+                        Attack();
+                        anim.animator.SetTrigger("Attack");
+                    }
+                    isAttacking = true;
+                    nextAttackTime = Time.time + 1f / inventory.GetWeapon(inventory.currentWeaponIndex).fireRate;
                 }else{
-                    isShooting = false;
+                    isAttacking = false;
                 }
             }
         
@@ -66,6 +80,22 @@ public class Shooting : MonoBehaviour
 
     void FixedUpdate(){
         lastPosition = rb.position;
+    }
+
+    void Attack(){
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(firePoint.position, attackRange, layerMask);
+
+        foreach(Collider2D enemy in hitEnemies){
+            Debug.Log("Hit " + enemy.tag);
+            enemy.GetComponent<PlayerStats>().TakeDamage(inventory.GetWeapon().damage);
+        }
+    }
+
+    void OnDrawGizmosSelected(){
+        if(firePoint == null){
+            return;
+        }
+        Gizmos.DrawWireSphere(firePoint.position, attackRange);
     }
         
     void Shoot(){

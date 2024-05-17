@@ -31,24 +31,24 @@ public class DirtBomb : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D collider){
-        if(collider.tag == "TerroDirt" && !isPlanted){
+        if(collider.CompareTag("TerroDirt") && !isPlanted){
             FindFirstObjectByType<Inventory>().TakeBomb();
             Destroy(gameObject);
         }
     }
 
     void OnTriggerStay2D(Collider2D collider){
-        if(collider.tag == "Purifier" && isPlanted && FindFirstObjectByType<Purifier>().GetDefuseInput()){
+        if(collider.CompareTag("Purifier") && isPlanted && FindFirstObjectByType<Purifier>().GetDefuseInput()){
             StartCoroutine(Defuse());
         }
 
-        if(FindObjectOfType<Shooting>().isShooting){
+        if(FindObjectOfType<Combat>().isAttacking){
             CancelDefuse();
         }
     }
 
     void OnTriggerExit2D(Collider2D collider){
-        if(collider.tag == "Purifier"){
+        if(collider.CompareTag("Purifier")){
             CancelDefuse();
         }
     }
@@ -94,7 +94,7 @@ public class DirtBomb : MonoBehaviour
             }
             */
 
-            if(FindObjectOfType<Shooting>().isMoving){
+            if(FindObjectOfType<Combat>().isMoving){
                 CancelDefuse();
             }
             

@@ -12,7 +12,7 @@ public class GameLoop : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("Game Loop Initialized.");
+        //Debug.Log("Game Loop Initialized.");
     }
     public void RoundStart()
     {

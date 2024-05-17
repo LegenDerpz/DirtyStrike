@@ -11,7 +11,7 @@ public class Inventory : MonoBehaviour
     public Weapon dirtBomb;
     public GameObject dirtBombPrefab;
     public int maxInventorySlots = 4;
-    public int currentWeaponIndex = 0;
+    public int currentWeaponIndex = 1;
     public int currentAmmo;
 
     private void Start(){
@@ -52,13 +52,11 @@ public class Inventory : MonoBehaviour
             CurrentWeaponData currentWeaponData = JsonUtility.FromJson<CurrentWeaponData>(weaponDataString);   
             
             if(currentWeaponData.hasDiedLastRound){
-                Debug.Log("Died Last Round");
+                //Debug.Log("Died Last Round");
             }else{
                 GetComponent<Inventory>().weapons[0] = currentWeaponData.primaryWeapon;
                 GetComponent<Inventory>().weapons[1] = currentWeaponData.secondaryWeapon;
-                Debug.Log("Didn't Die Last Round");
-                Debug.Log(currentWeaponData.primaryWeapon);
-                Debug.Log(currentWeaponData.secondaryWeapon);
+                //Debug.Log("Didn't Die Last Round");
             }
         }
 
