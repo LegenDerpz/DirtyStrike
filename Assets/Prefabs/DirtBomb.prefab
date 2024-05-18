@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5508375394122603596}
   m_Layer: 0
   m_Name: DirtBomb
-  m_TagString: Untagged
+  m_TagString: DirtBomb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -136,7 +136,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 6019515819553294406}
   isPlanted: 0
   plantTime: 4
-  explodeTime: 10
   hasExploded: 0
   defuseTime: 7
   isDefusing: 0

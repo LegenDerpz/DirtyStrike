@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Purifier
   - TerroDirt
+  - DirtBomb
   layers:
   - Default
   - TransparentFX

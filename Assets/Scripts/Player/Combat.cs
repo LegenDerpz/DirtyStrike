@@ -119,6 +119,9 @@ public class Combat : MonoBehaviour
         float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
         Quaternion spreadRotation = Quaternion.Euler(0, 0, angle-90f);
 
+        waterBulletPrefab.GetComponent<Bullet>().bulletOwner = GetComponent<PlayerData>().username;
+        waterBulletPrefab.GetComponent<Bullet>().bulletOwnerBody = GetComponent<PlayerData>();
+
         GameObject waterBullet = Instantiate(waterBulletPrefab, firePoint.position, spreadRotation);
         Rigidbody2D rb = waterBullet.GetComponent<Rigidbody2D>();
         rb.AddForce(targetDirection * bulletForce, ForceMode2D.Impulse);

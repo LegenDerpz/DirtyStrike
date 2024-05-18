@@ -5,12 +5,12 @@ using UnityEngine;
 public class AnimationHandler : MonoBehaviour
 {
     public Animator animator;
-    public Combat shooting;
+    public Combat combat;
 
     void Update(){
-        if(shooting.isMoving){
+        if(combat.isMoving){
             animator.SetBool("IsMoving", true);
-        }else if(!shooting.isMoving){
+        }else if(!combat.isMoving){
             animator.SetBool("IsMoving", false);
         }
     }

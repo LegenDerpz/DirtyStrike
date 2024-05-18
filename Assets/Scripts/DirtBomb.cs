@@ -42,7 +42,7 @@ public class DirtBomb : MonoBehaviour
             StartCoroutine(Defuse());
         }
 
-        if(FindObjectOfType<Combat>().isAttacking){
+        if(FindObjectOfType<Combat>().isAttacking || FindObjectOfType<Combat>().isMoving){
             CancelDefuse();
         }
     }
@@ -60,11 +60,10 @@ public class DirtBomb : MonoBehaviour
 
     IEnumerator Explode(){
         hasExploded = true;
-        FindObjectOfType<GameLoop>().AddTerroDirtScore();
 
         yield return new WaitForSeconds(5f);
         
-        FindObjectOfType<GameLoop>().RoundEnd();
+        FindObjectOfType<GameLoop>().FindWinCondition();
     }
 
     IEnumerator Defuse(){
@@ -86,17 +85,7 @@ public class DirtBomb : MonoBehaviour
                 defused = true;
                 FindObjectOfType<GameLoop>().FindWinCondition();
                 yield break;
-            }
-            
-            /*
-            if(!FindFirstObjectByType<Purifier>().GetDefuseInput() && !defused){
-                CancelDefuse();
-            }
-            */
-
-            if(FindObjectOfType<Combat>().isMoving){
-                CancelDefuse();
-            }
+            }      
             
             yield return null;
         }

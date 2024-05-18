@@ -10,6 +10,7 @@ public class RoundTimer : MonoBehaviour
     public TextMeshProUGUI timer;
 
     public bool buyPhaseEnded = false;
+    public bool timeRanOut = false;
 
     void Start()
     {
@@ -22,11 +23,17 @@ public class RoundTimer : MonoBehaviour
         if(remainingTime <= 0 && !buyPhaseEnded){
             buyPhaseEnd();
         }
-        remainingTime -= Time.deltaTime;
+
+        if(!timeRanOut){
+            remainingTime -= Time.deltaTime;
+        }
+
         timer.text = Math.Round(remainingTime, 2).ToString().Replace(".", ":");
 
         if(remainingTime <= 0 && buyPhaseEnded){
+            timeRanOut = true;
             timer.enabled = false;
+            FindObjectOfType<GameLoop>().FindWinCondition();
         }
     }
 

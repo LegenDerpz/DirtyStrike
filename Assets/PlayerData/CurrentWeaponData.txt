@@ -1,1 +1,0 @@
-{"primaryWeapon":{"instanceID":0},"secondaryWeapon":{"instanceID":28806},"hasDiedLastRound":false}

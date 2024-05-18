@@ -13,7 +13,19 @@ public class PlayerHUD : MonoBehaviour
     public Slider reloadCircle;
     public Slider plantCircle;
     public Slider defusingCirle;
+
+    public TextMeshProUGUI purifierScore;
+    public TextMeshProUGUI terroDirtScore;
+    int p_score;
+    int t_score;
+
+    //Temp
+    public TextMeshProUGUI kills;
     
+    void Start(){
+        p_score = FindObjectOfType<GameLoop>().GetPurifierScore();
+        t_score = FindObjectOfType<GameLoop>().GetTerroDirtScore();
+    }
 
     void Update(){
         try{
@@ -37,14 +49,18 @@ public class PlayerHUD : MonoBehaviour
                 reloadCircle.gameObject.SetActive(false);
             }  
         }catch(NullReferenceException){}
+
+        purifierScore.text = p_score.ToString();
+        terroDirtScore.text = t_score.ToString();
+        kills.text = "Kills: " + GetComponent<PlayerData>().GetPlayerKills().ToString();
     }
 
     void FixedUpdate(){
         try{
             //TerroDirt Planting
-            if(FindObjectOfType<TerroDirt>().isPlanting){
+            if(GetComponent<TerroDirt>().isPlanting){
                 plantCircle.gameObject.SetActive(true);
-                plantCircle.value = FindObjectOfType<TerroDirt>().plantProgress;
+                plantCircle.value = GetComponent<TerroDirt>().plantProgress;
             }else{
                 plantCircle.gameObject.SetActive(false);
             }

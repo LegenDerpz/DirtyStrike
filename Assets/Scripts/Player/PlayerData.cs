@@ -1,27 +1,34 @@
 using System.Collections.Generic;
 using System.IO;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.U2D.Animation;
 
 public class PlayerData : MonoBehaviour
 {
     public static readonly string Player_Data_Folder = Application.dataPath + "/PlayerData/";
+    public string username = "username";
     public Inventory inv;
 
     public Vector2 position;
     public Rigidbody2D rb;
 
-    public float rotation;
-    public Weapon currentWeapon;
 
+    //Sprite Setup
     public GameObject head, rightArm, rightHand, leftArm, leftHand;
     SpriteResolver sr_head, sr_rightArm, sr_rightHand, sr_leftArm, sr_leftHand;
+    private int layer = 10; //10 is the Purifier Layer
 
-    private int layer = 10;
+    //====Stats====
+    //kills;
+    //deaths;
+    
+    //====To Consider====
+    //assists
+    //damageDealt
+    //damageTaken
+    //defuses
+    //plants
+
 
     void Start()
     {
@@ -123,6 +130,12 @@ public class PlayerData : MonoBehaviour
     public void SetPlayerDeathState(bool deathState)
     {
         GetComponent<PlayerStats>().isDead = deathState;
+    }
+    public void AddPlayerKills(int killAmount){
+        PlayerPrefs.SetInt(username + "_" + "Kills", GetPlayerKills() + killAmount);
+    }
+    public int GetPlayerKills(){
+        return PlayerPrefs.GetInt(username + "_" + "Kills");
     }
     //
 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public string bulletOwner;
+    public PlayerData bulletOwnerBody;
     public Rigidbody2D rb;
     public float damage = 20f;
     public float critChance = 0.1f;
@@ -21,6 +23,7 @@ public class Bullet : MonoBehaviour
             }else{
                 player.TakeDamage(damage);
             }
+            Debug.Log(GetBulletOwner() + " hit " + player.tag);
         }
         
         //Destroy(effect, 0.5f);
@@ -38,5 +41,11 @@ public class Bullet : MonoBehaviour
     }
     public float GetBulletDamage(){
         return damage;
+    }
+    public string GetBulletOwner(){
+        return bulletOwner;
+    }
+    public PlayerData GetBulletOwnerBody(){
+        return bulletOwnerBody;
     }
 }
