@@ -26,6 +26,7 @@ public class Combat : MonoBehaviour
     //Melee
     public LayerMask layerMask;
     public float attackRange = 0.5f;
+    Collider2D[] hitEnemies;
 
     //Transform
     Vector2 lastPosition;
@@ -34,17 +35,26 @@ public class Combat : MonoBehaviour
     void Update()
     {        
         try{
-            if(inventory.GetWeapon(inventory.currentWeaponIndex).magazineTotalSize > 0){
-                if(inventory.GetWeapon(inventory.currentWeaponIndex).magazineTotalSize >= inventory.GetWeapon(inventory.currentWeaponIndex).magazineSize){
-                    reloadAmount = inventory.GetWeapon(inventory.currentWeaponIndex).magazineSize - inventory.GetWeapon(inventory.currentWeaponIndex).currentAmmo;
-                }else if(inventory.GetWeapon(inventory.currentWeaponIndex).magazineTotalSize < inventory.GetWeapon(inventory.currentWeaponIndex).magazineSize){
-                    reloadAmount = Mathf.Min(inventory.GetWeapon(inventory.currentWeaponIndex).magazineSize - inventory.GetWeapon(inventory.currentWeaponIndex).currentAmmo, inventory.GetWeapon(inventory.currentWeaponIndex).magazineTotalSize);
+            if(inventory.primaryMagTotalSize > 0){
+                if(inventory.GetWeapon().weaponClass == WeaponClass.Primary && inventory.primaryMagTotalSize >= inventory.primaryMagAmmo){
+                    reloadAmount = inventory.primaryMagAmmo - inventory.primaryCurrentAmmo;
+                }else if(inventory.GetWeapon().weaponClass == WeaponClass.Primary && inventory.primaryMagTotalSize < inventory.primaryMagAmmo){
+                    reloadAmount = Mathf.Min(inventory.primaryMagAmmo - inventory.primaryCurrentAmmo, inventory.primaryMagTotalSize);
+                }
+            }
+
+            if(inventory.secondaryMagTotalSize > 0){
+                if(inventory.GetWeapon().weaponClass == WeaponClass.Secondary && inventory.secondaryMagTotalSize >= inventory.secondaryMagAmmo){
+                    reloadAmount = inventory.secondaryMagAmmo - inventory.secondaryCurrentAmmo;
+                }else if(inventory.GetWeapon().weaponClass == WeaponClass.Secondary && inventory.secondaryMagTotalSize < inventory.secondaryMagAmmo){
+                    reloadAmount = Mathf.Min(inventory.secondaryMagAmmo - inventory.secondaryCurrentAmmo, inventory.secondaryMagTotalSize);
                 }
             }
 
             if(Time.time >= nextAttackTime && inventory.GetWeapon().weaponType != WeaponType.Bomb){
                 if(Input.GetButton("Fire1") && !isReloading){
-                    if(inventory.IsGun() && inventory.GetWeapon(inventory.currentWeaponIndex).currentAmmo > 0){
+                    if(inventory.IsGun() && ((inventory.GetWeapon().weaponClass == WeaponClass.Primary && inventory.primaryCurrentAmmo > 0)
+                        || (inventory.GetWeapon().weaponClass == WeaponClass.Secondary && inventory.secondaryCurrentAmmo > 0))){
                         Shoot();
                     }else if(inventory.GetWeapon().weaponType == WeaponType.Melee){
                         Attack();
@@ -57,12 +67,17 @@ public class Combat : MonoBehaviour
                 }
             }
         
-            if((Input.GetKeyDown(KeyCode.R) || inventory.GetWeapon(inventory.currentWeaponIndex).currentAmmo <= 0) && inventory.IsGun() && !isReloading){
-                if(inventory.GetWeapon(inventory.currentWeaponIndex).magazineTotalSize > 0 && !isReloading && 
-                    inventory.GetWeapon(inventory.currentWeaponIndex).currentAmmo < inventory.GetWeapon(inventory.currentWeaponIndex).magazineSize){
+            if((Input.GetKeyDown(KeyCode.R) || inventory.GetWeapon().weaponClass == WeaponClass.Primary && inventory.primaryCurrentAmmo <= 0) && inventory.IsGun() && !isReloading){
+                if(inventory.primaryMagTotalSize > 0 && !isReloading && inventory.primaryCurrentAmmo < inventory.primaryMagAmmo){
                     StartCoroutine(Reload());
                 }
             }
+            if((Input.GetKeyDown(KeyCode.R) || inventory.GetWeapon().weaponClass == WeaponClass.Secondary && inventory.secondaryCurrentAmmo <= 0) && inventory.IsGun() && !isReloading){
+                if(inventory.secondaryMagTotalSize > 0 && !isReloading && inventory.secondaryCurrentAmmo < inventory.secondaryMagAmmo){
+                    StartCoroutine(Reload());
+                }
+            }
+
             if(previousWeapon != inventory.currentWeaponIndex && isReloading){
                 if(isReloading){
                     InterruptReload();
@@ -83,12 +98,14 @@ public class Combat : MonoBehaviour
     }
 
     void Attack(){
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(firePoint.position, attackRange, layerMask);
+        hitEnemies = Physics2D.OverlapCircleAll(firePoint.position, attackRange, layerMask);
 
         foreach(Collider2D enemy in hitEnemies){
             Debug.Log("Hit " + enemy.tag);
             enemy.GetComponent<PlayerStats>().TakeDamage(inventory.GetWeapon().damage);
+            enemy.GetComponent<PlayerStats>().GetAttacker(gameObject);
         }
+
     }
 
     void OnDrawGizmosSelected(){
@@ -124,15 +141,26 @@ public class Combat : MonoBehaviour
 
         GameObject waterBullet = Instantiate(waterBulletPrefab, firePoint.position, spreadRotation);
         Rigidbody2D rb = waterBullet.GetComponent<Rigidbody2D>();
+
+        if(inventory.GetWeapon().weaponType == WeaponType.Sniper){
+            bulletForce = 60f;
+        }else{
+            bulletForce = 30f;
+        }
         rb.AddForce(targetDirection * bulletForce, ForceMode2D.Impulse);
-        inventory.GetWeapon(inventory.currentWeaponIndex).currentAmmo--;
+
+        if(inventory.GetWeapon().weaponClass == WeaponClass.Primary){
+            inventory.primaryCurrentAmmo--;
+        }else if(inventory.GetWeapon().weaponClass == WeaponClass.Secondary){
+            inventory.secondaryCurrentAmmo--;
+        }
     }
 
     IEnumerator Reload(){
         isReloading = true;
         Debug.Log("Reloading...");
 
-        float reloadTime = inventory.GetWeapon(inventory.currentWeaponIndex).reloadTime;
+        float reloadTime = inventory.GetWeapon().reloadTime;
         float elapsedTime = 0f;
 
         while(elapsedTime < reloadTime){
@@ -151,12 +179,21 @@ public class Combat : MonoBehaviour
         }
 
         isReloading = false;
-        inventory.GetWeapon(inventory.currentWeaponIndex).magazineTotalSize -= reloadAmount;
-        inventory.GetWeapon(inventory.currentWeaponIndex).currentAmmo += reloadAmount;
+        if(inventory.GetWeapon().weaponClass == WeaponClass.Primary){
+            inventory.primaryMagTotalSize -= reloadAmount;
+            inventory.primaryCurrentAmmo += reloadAmount;
+        }else if(inventory.GetWeapon().weaponClass == WeaponClass.Secondary){
+            inventory.secondaryMagTotalSize -= reloadAmount;
+            inventory.secondaryCurrentAmmo += reloadAmount;
+        }
         Debug.Log("Reloaded!");
     }
 
     public void InterruptReload(){
         reloadInterrupted = true;
+    }
+
+    public Collider2D[] GetMeleeCollider(){
+        return hitEnemies;
     }
 }

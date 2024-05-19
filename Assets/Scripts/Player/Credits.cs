@@ -4,7 +4,7 @@ public class Credits : MonoBehaviour
 {
     public Inventory inv;
     public PlayerData playerData;
-    public static int startingCredits = 800;
+    public static int startingCredits = 9000;
 
     public static int killReward = 200;
     public static int plantReward = 300;
@@ -13,6 +13,14 @@ public class Credits : MonoBehaviour
 
     public void AddCredits(int creditsToAdd){
         PlayerPrefs.SetInt(playerData.username + "_" + "Credits", GetCredits() + creditsToAdd);
+    }
+
+    public void AddTeamCredits(int creditsToAdd, string tagName){
+        foreach(GameObject player in GameObject.FindGameObjectsWithTag(tagName)){
+            if(player.GetComponent<PlayerData>() != null){
+                PlayerPrefs.SetInt(player.GetComponent<PlayerData>().username + "_" + "Credits", GetCredits() + creditsToAdd);
+            }
+        }
     }
 
     public void RemoveCredits(int creditsToRemove){

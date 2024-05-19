@@ -61,11 +61,18 @@ public class PlayerData : MonoBehaviour
         }
     }
 
-    public static void Init()
+    public void Init()
     {
         if (!Directory.Exists(Player_Data_Folder))
         {
             Directory.CreateDirectory(Player_Data_Folder);
+        }
+        foreach (PlayerData player in FindObjectsOfType<PlayerData>())
+        {
+            if (!Directory.Exists(Player_Data_Folder + "/" + player.username))
+            {
+                Directory.CreateDirectory(Player_Data_Folder + "/" + player.username);
+            }
         }
     }
 
@@ -104,9 +111,23 @@ public class PlayerData : MonoBehaviour
     {
         inv.weapons[index] = weapon;
     }
-    public int GetPlayerAmmo()
-    {
-        return inv.currentAmmo;
+    public int GetPrimaryAmmo(){
+        return inv.primaryCurrentAmmo;
+    }
+    public int GetPrimaryMagAmmo(){
+        return inv.primaryMagAmmo;
+    }
+    public int GetPrimaryMagTotalAmmo(){
+        return inv.primaryMagTotalSize;
+    }
+    public int GetSecondaryAmmo(){
+        return inv.secondaryCurrentAmmo;
+    }
+    public int GetSecondaryMagAmmo(){
+        return inv.secondaryMagAmmo;
+    }
+    public int GetSecondaryMagTotalAmmo(){
+        return inv.secondaryMagTotalSize;
     }
     public List<Weapon> GetPlayerInventory()
     {
@@ -115,6 +136,9 @@ public class PlayerData : MonoBehaviour
     //
 
     //Player Stats
+    public string GetUsername(){
+        return username;
+    }
     public float GetPlayerHealth()
     {
         return GetComponent<PlayerStats>().health;
@@ -122,6 +146,9 @@ public class PlayerData : MonoBehaviour
     public void SetPlayerHealth(float health)
     {
         GetComponent<PlayerStats>().health = health;
+    }
+    public float GetCurrentHealth(){
+        return GetComponent<PlayerStats>().GetCurrentHealth();
     }
     public bool GetPlayerDeathState()
     {
@@ -168,7 +195,7 @@ public class PlayerData : MonoBehaviour
                 hasDiedLastRound = hasDiedLastRound
             };
             string json = JsonUtility.ToJson(currentWeaponData);
-            File.WriteAllText(Player_Data_Folder + "/CurrentWeaponData.txt", json);
+            File.WriteAllText(Player_Data_Folder + "/" + username + "/CurrentWeaponData.txt", json);
             GetComponent<Inventory>().LoadWeapons();
         }
         else
@@ -193,15 +220,15 @@ public class PlayerData : MonoBehaviour
                 hasDiedLastRound = hasDiedLastRound
             };
             string json = JsonUtility.ToJson(currentWeaponData);
-            File.WriteAllText(Player_Data_Folder + "CurrentWeaponData.txt", json);
+            File.WriteAllText(Player_Data_Folder + "/" + username + "/CurrentWeaponData.txt", json);
         }
     }
 
-    public static string LoadWeaponData()
+    public string LoadWeaponData()
     {
-        if (File.Exists(Player_Data_Folder + "CurrentWeaponData.txt"))
+        if (File.Exists(Player_Data_Folder + "/" + username + "/CurrentWeaponData.txt"))
         {
-            string weaponDataString = File.ReadAllText(Player_Data_Folder + "CurrentWeaponData.txt");
+            string weaponDataString = File.ReadAllText(Player_Data_Folder + "/" + username + "/CurrentWeaponData.txt");
             return weaponDataString;
         }
         else

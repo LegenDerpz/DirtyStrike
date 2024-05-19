@@ -34,8 +34,12 @@ public class PlayerHUD : MonoBehaviour
                 weapon.text = inv.GetWeapon(inv.currentWeaponIndex).name.ToString();
                 ammoIcon.enabled = false;
             }else{
-                weapon.text = inv.GetWeapon(inv.currentWeaponIndex).name.ToString();
-                currentAmmo.text = inv.GetWeapon(inv.currentWeaponIndex).currentAmmo.ToString() + "/" + inv.GetWeapon(inv.currentWeaponIndex).magazineTotalSize.ToString();
+                weapon.text = inv.GetWeapon().name.ToString();
+                if(inv.GetWeapon().weaponClass == WeaponClass.Primary){
+                    currentAmmo.text = inv.primaryCurrentAmmo.ToString() + "/" + inv.primaryMagTotalSize.ToString();
+                }else if(inv.GetWeapon().weaponClass == WeaponClass.Secondary){
+                    currentAmmo.text = inv.secondaryCurrentAmmo.ToString() + "/" + inv.secondaryMagTotalSize.ToString();
+                }
                 ammoIcon.enabled = true;
             }
 

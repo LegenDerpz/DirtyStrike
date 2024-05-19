@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,6 +23,11 @@ public class GameLoop : MonoBehaviour
             foreach(PlayerData player in FindObjectsOfType<PlayerData>()){
                 PlayerPrefs.SetInt(player.username + "_" + "Credits", Credits.startingCredits);
                 PlayerPrefs.Save();
+            }
+
+            //Delete Current Weapon Data File
+            if(File.Exists("")){
+
             }
             ResetKills();
             Debug.Log("Game Start!");
@@ -55,22 +61,37 @@ public class GameLoop : MonoBehaviour
                 deadTerroDirtPlayers++;
             }
         }
-
+        
+        if(deadPurifierPlayers < GameObject.FindGameObjectsWithTag("Purifier").Length){
+            deadPurifierPlayers = 0;
+        }
+        if(deadTerroDirtPlayers < GameObject.FindGameObjectsWithTag("TerroDirt").Length){
+            deadTerroDirtPlayers = 0;
+        }
+        
         if(deadPurifierPlayers >= GameObject.FindGameObjectsWithTag("Purifier").Length
             || (GameObject.FindGameObjectWithTag("DirtBomb") != null && FindObjectOfType<DirtBomb>().hasExploded))
         {
-            Debug.Log("Wazzup");
+            Debug.Log("TerroDirts Round Win");
+
             AddTerroDirtScore();
+            AllocateRoundEndCredits("TerroDirt", "Purifier");
             StartCoroutine(Delay());
+
             if(GetPurifierScore() < 3 || GetTerroDirtScore() < 3){
                 RestartRound();
             }
         }else if((deadTerroDirtPlayers >= GameObject.FindGameObjectsWithTag("TerroDirt").Length && !FindObjectOfType<DirtBomb>().isPlanted && FindObjectOfType<DirtBomb>() != null)
             || FindObjectOfType<DirtBomb>().defused
             || (!FindObjectOfType<DirtBomb>().isPlanted && FindObjectOfType<RoundTimer>().timeRanOut)){
-            Debug.Log("Hallooo");
+            Debug.Log("Purifiers Round Win");
+            Debug.Log(GameObject.FindGameObjectsWithTag("TerroDirt").Length);
+            Debug.Log(deadTerroDirtPlayers);
+
             AddPurifierScore();
+            AllocateRoundEndCredits("Purifier", "TerroDirt");
             StartCoroutine(Delay());
+
             if(GetPurifierScore() < 3 || GetTerroDirtScore() < 3){
                 RestartRound();
             }
@@ -90,15 +111,18 @@ public class GameLoop : MonoBehaviour
 
     public void AddTerroDirtScore()
     {
-        //terrodirtScore++;
         PlayerPrefs.SetInt(lobbyName + "_" + "TerroDirt Score", GetTerroDirtScore() + 1);
     }
 
     public void AddPurifierScore()
     {
-        //purifierScore++;
         PlayerPrefs.SetInt(lobbyName + "_" + "Purifier Score",  GetPurifierScore() + 1);
         PlayerPrefs.Save();
+    }
+
+    public void AllocateRoundEndCredits(string winTeamTag, string loseTeamTag){
+        FindAnyObjectByType<Credits>().AddTeamCredits(Credits.roundWinReward, winTeamTag);
+        FindAnyObjectByType<Credits>().AddTeamCredits(Credits.roundLossReward, loseTeamTag);
     }
 
     //First to 3 Points Wins
@@ -108,15 +132,24 @@ public class GameLoop : MonoBehaviour
         //Main Menu Button
         ResetScore();
         ResetKills();
+        ResetCredits();
     }
 
     public void ResetScore(){
         PlayerPrefs.SetInt(lobbyName + "_" + "Purifier Score", 0);
         PlayerPrefs.SetInt(lobbyName + "_" + "TerroDirt Score", 0);
+        PlayerPrefs.Save();
     }
     public void ResetKills(){
         foreach(PlayerData player in FindObjectsOfType<PlayerData>()){
             PlayerPrefs.SetInt(player.username + "_" + "Kills", 0);
+            PlayerPrefs.Save();
+        }
+    }
+    public void ResetCredits(){
+        foreach(PlayerData player in FindObjectsOfType<PlayerData>()){
+            PlayerPrefs.SetInt(player.username + "_" + "Credits", 0);
+            PlayerPrefs.Save();
         }
     }
 

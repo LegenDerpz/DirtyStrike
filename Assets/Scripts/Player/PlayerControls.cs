@@ -2,7 +2,8 @@ using UnityEngine;
 using Cinemachine;
 using System;
 using UnityEngine.U2D.Animation;
-using System.Reflection.Emit;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class PlayerControls : MonoBehaviour
     Vector2 mousePos;
     Vector2 lookDir;
     bool isAiming = false;
+
+    bool shopOpened = false;
 
     void Start(){
         if(inventory.weapons[0] != null){
@@ -70,6 +73,13 @@ public class PlayerControls : MonoBehaviour
         }
         if(Input.GetAxis("Mouse ScrollWheel") > 0f){
             SelectWeapon(++inventory.currentWeaponIndex);
+        }
+
+        if(Input.GetKeyDown(KeyCode.B) && !shopOpened && !FindObjectOfType<RoundTimer>().buyPhaseEnded){
+            StartCoroutine(OpenWeaponShop());
+        }
+        if(Input.GetKeyDown(KeyCode.B) && shopOpened){
+            CloseWeaponShop();
         }
     }
 
@@ -176,5 +186,23 @@ public class PlayerControls : MonoBehaviour
     public void ChangeWeaponSprite(Weapon weapon){
         weaponSprite = weapon.sprite;
         equippedWeapon.gameObject.GetComponent<SpriteRenderer>().sprite = weaponSprite;
+    }
+
+    IEnumerator OpenWeaponShop(){
+        SceneManager.LoadSceneAsync("WeaponShop", LoadSceneMode.Additive);
+        yield return new WaitForSeconds(0.1f);
+        GetComponent<Combat>().enabled = false;
+        FindObjectOfType<WeaponShop>().SetShopOwnerObject(gameObject);
+        shopOpened = true;
+    }
+    public void CloseWeaponShop(){
+        SceneManager.UnloadSceneAsync("WeaponShop");
+        GetComponent<Combat>().enabled = true;
+        //FindObjectOfType<WeaponShop>().SetShopOwnerObject(null);
+        shopOpened = false;
+    }
+
+    public bool GetShopState(){
+        return shopOpened;
     }
 }

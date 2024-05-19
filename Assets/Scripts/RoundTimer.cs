@@ -4,13 +4,14 @@ using System;
 
 public class RoundTimer : MonoBehaviour
 {
-    float buyPhaseTime = 10f;
-    float roundTime = 20f;
+    float buyPhaseTime = 20f;
+    float roundTime = 100f;
     public float remainingTime;
     public TextMeshProUGUI timer;
 
     public bool buyPhaseEnded = false;
     public bool timeRanOut = false;
+    bool checkedShopState = false;
 
     void Start()
     {
@@ -34,6 +35,17 @@ public class RoundTimer : MonoBehaviour
             timeRanOut = true;
             timer.enabled = false;
             FindObjectOfType<GameLoop>().FindWinCondition();
+        }
+
+        if(!checkedShopState){
+            if(buyPhaseEnded){
+                foreach(PlayerControls player in FindObjectsOfType<PlayerControls>()){
+                    if(player.GetComponent<PlayerControls>().GetShopState()){
+                        player.GetComponent<PlayerControls>().CloseWeaponShop();
+                    }
+                }
+                checkedShopState = true;
+            }
         }
     }
 

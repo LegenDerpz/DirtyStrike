@@ -8,6 +8,7 @@ public class TerroDirt : MonoBehaviour
     public DirtBomb dirtBomb;
     public Rigidbody2D rb;
 
+    public bool canPlant = false;
     public float plantProgress;
     public bool isPlanting = false;
 
@@ -15,7 +16,8 @@ public class TerroDirt : MonoBehaviour
     {
         //Plant Bomb
         try{
-            if(inv.GetWeapon(inv.currentWeaponIndex).weaponType == WeaponType.Bomb && Input.GetKeyDown(KeyCode.F) && FindObjectOfType<DirtBomb>() == null){
+            if(inv.GetWeapon(inv.currentWeaponIndex).weaponType == WeaponType.Bomb && Input.GetKeyDown(KeyCode.F) && FindObjectOfType<DirtBomb>() == null
+            && canPlant){
                 StartCoroutine(PlantBomb());
             }   
         }catch(NullReferenceException){}

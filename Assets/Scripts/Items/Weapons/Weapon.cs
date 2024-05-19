@@ -7,7 +7,7 @@ public class Weapon : ScriptableObject
     public Sprite sprite;
     public new string name;
     public float damage;
-    public int fireRate;
+    public float fireRate;
     public float bulletSpread;
     public float bulletSpreadMovingModifier;
     public int currentAmmo;
@@ -24,5 +24,5 @@ public class Weapon : ScriptableObject
     public WeaponClass weaponClass;
 }
 
-public enum WeaponType{Melee, Pistol, Rifle, Shotgun, Sniper, Bomb}
+public enum WeaponType{Melee, Pistol, Rifle, SMG, Shotgun, Sniper, Bomb}
 public enum WeaponClass{Primary, Secondary, Melee, Bomb}

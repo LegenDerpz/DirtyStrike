@@ -6,7 +6,8 @@ public class PlayerStats : MonoBehaviour
     public float health = 1000f;
     float currentHealth;
     public GameObject deathEffect;
-    public Bullet bullet;
+    Bullet bullet;
+    Collider2D[] enemyMelee;
 
     public bool isDead = false;
 
@@ -33,6 +34,14 @@ public class PlayerStats : MonoBehaviour
             bullet.GetBulletOwnerBody().GetComponent<Credits>().AddCredits(Credits.killReward);
             Debug.Log(bullet.GetBulletOwnerBody().GetComponent<Credits>().GetCredits());
         }
+
+        if(isDead && enemyMelee != null){
+            Debug.Log(enemyMelee[0].GetComponent<PlayerData>().GetUsername() + " killed " + gameObject.tag + "!");
+            enemyMelee[0].GetComponent<PlayerData>().AddPlayerKills(1);
+            enemyMelee[0].GetComponent<Credits>().AddCredits(Credits.killReward);
+            Debug.Log(enemyMelee[0].GetComponent<Credits>().GetCredits());
+        }
+        Debug.Log(enemyMelee);
     }
 
     public void Die(){
@@ -66,5 +75,16 @@ public class PlayerStats : MonoBehaviour
 
     IEnumerator DieDelay(){
         yield return new WaitForSeconds(1f);
+    }
+
+    public float GetCurrentHealth(){
+        return currentHealth;
+    }
+    public void SetCurrentHealth(float currentHealth){
+        this.currentHealth = currentHealth;
+    }
+
+    public void GetAttacker(GameObject attacker){
+        enemyMelee = attacker.GetComponent<Combat>().GetMeleeCollider();
     }
 }

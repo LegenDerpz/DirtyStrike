@@ -7,46 +7,54 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public List<Weapon> weapons;
-    public WeaponShop shop;
+    public Weapon startingWeapon;
+    public Weapon melee;
     public Weapon dirtBomb;
     public GameObject dirtBombPrefab;
     public int maxInventorySlots = 4;
     public int currentWeaponIndex = 1;
-    public int currentAmmo;
+
+    public int primaryCurrentAmmo;
+    public int primaryMagAmmo;
+    public int primaryMagTotalSize;
+
+    public int secondaryCurrentAmmo;
+    public int secondaryMagAmmo;
+    public int secondaryMagTotalSize;
 
     private void Start(){
         weapons =  new List<Weapon>();
         LoadWeapons();
-        //weapons[0] = shop.rifle;
         
         try{
-            int i = 0;
-            for(i = 0; i < weapons.Count; i++){
-                if(weapons[i] != null){
-                    currentAmmo = weapons[i].magazineSize;
-                    weapons[i].currentAmmo = currentAmmo;
-                    weapons[i].magazineTotalSize = weapons[i].magazineSize * 3;
-                }
+            if(weapons[0] != null){
+                InitializeWeapon(weapons[0]);
+            }
+
+            if(weapons[1] != null){
+                InitializeWeapon(weapons[1]);
             }
         }catch(NullReferenceException){}
     }
 
     private void Update(){
+        /*
         try{
-            if(GetWeapon(currentWeaponIndex) != null){
+            if(GetWeapon() != null){
                 currentAmmo = weapons[currentWeaponIndex].currentAmmo;
             }
         }catch(IndexOutOfRangeException){}catch(ArgumentOutOfRangeException){}
+        */
     }
 
     public void LoadWeapons(){
         weapons.Clear();
 
         for(int i = 0; i < maxInventorySlots; i++){
-                weapons.Add(null);
+            weapons.Add(null);
         }
 
-        string weaponDataString = PlayerData.LoadWeaponData();
+        string weaponDataString = GetComponent<PlayerData>().LoadWeaponData();
 
         if(weaponDataString != null){
             CurrentWeaponData currentWeaponData = JsonUtility.FromJson<CurrentWeaponData>(weaponDataString);   
@@ -61,14 +69,14 @@ public class Inventory : MonoBehaviour
         }
 
         EquipStartingWeapon();
-        weapons[2] = shop.knife;
+        weapons[2] = melee;
         weapons[3] = null;
         GetComponent<PlayerStats>().isDead = false;
     }
 
     private void EquipStartingWeapon(){
         if(weapons[1] == null){
-            weapons[1] = shop.classicPistol;
+            weapons[1] = startingWeapon;
         }
     }
 
@@ -85,6 +93,18 @@ public class Inventory : MonoBehaviour
             return;
         }
         weapons.Add(newWeapon);
+    }
+
+    public void AddPrimaryWeapon(Weapon newWeapon){
+        if(newWeapon.weaponClass == WeaponClass.Primary){
+            weapons[0] = newWeapon;
+        }
+    }
+
+    public void AddSecondaryWeapon(Weapon newWeapon){
+        if(newWeapon.weaponClass == WeaponClass.Secondary){
+            weapons[1] = newWeapon;
+        }
     }
     
     public void RemoveWeapon(Weapon weapon){
@@ -118,11 +138,25 @@ public class Inventory : MonoBehaviour
         return weapons[currentWeaponIndex].magazineTotalSize;
     }
 
+    public void InitializeWeapon(Weapon weapon){
+        if(weapon.weaponClass == WeaponClass.Primary){
+            primaryMagAmmo = weapons[0].magazineSize;
+            primaryCurrentAmmo = primaryMagAmmo;
+            primaryMagTotalSize = primaryMagAmmo * 3;
+        }
+        
+        if(weapon.weaponClass == WeaponClass.Secondary){
+            secondaryMagAmmo = weapons[1].magazineSize;
+            secondaryCurrentAmmo = weapons[1].magazineSize;
+            secondaryMagTotalSize = secondaryMagAmmo * 3;
+        }
+    }
+
     public bool IsGun(){
         try{
-            if(weapons[currentWeaponIndex].weaponClass == WeaponClass.Primary && GetWeapon(currentWeaponIndex) != null){
+            if(GetWeapon().weaponClass == WeaponClass.Primary && GetWeapon() != null){
                 return true;
-            }else if(weapons[currentWeaponIndex].weaponClass == WeaponClass.Secondary && GetWeapon(currentWeaponIndex) != null){
+            }else if(GetWeapon().weaponClass == WeaponClass.Secondary && GetWeapon() != null){
                 return true;
             }else{
                 return false;
@@ -131,6 +165,8 @@ public class Inventory : MonoBehaviour
     }
 
     public void TakeBomb(){
-        weapons[3] = dirtBomb;
+        if(gameObject.CompareTag("TerroDirt")){
+            weapons[3] = dirtBomb;
+        }
     }
 }
