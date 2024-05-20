@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 781875d0e4d167f43b1b1ff7e6a8841f, type: 3}
   m_Name: Melee
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  icon: {fileID: 0}
+  prefab: {fileID: 6808911168779442295, guid: 432ac1037e5cd8045bf0efb1ceac9195, type: 3}
+  sprite: {fileID: 21300000, guid: b100e01b2c11f1a43918df8942dc090c, type: 3}
   name: Knife
-  damage: 50
-  fireRate: 1
+  damage: 200
+  fireRate: 2
+  bulletSpread: 0
+  bulletSpreadMovingModifier: 0
   currentAmmo: 0
   reloadTime: 0
   magazineSize: 0
@@ -26,5 +28,6 @@ MonoBehaviour:
   cameraScoped: 3.2
   cameraUnscoped: 3
   moveSpeed: 4
+  cost: 0
   weaponType: 0
   weaponClass: 2

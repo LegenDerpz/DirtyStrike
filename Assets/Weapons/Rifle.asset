@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Rifle
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
-  icon: {fileID: 0}
+  sprite: {fileID: -9095717837082945937, guid: 71aeb894f9deb9b46a6733a4249e5d20, type: 3}
   name: Assault Rifle
   damage: 20
   fireRate: 7
-  currentAmmo: 0
+  bulletSpread: 10
+  bulletSpreadMovingModifier: 3.5
+  currentAmmo: 25
   reloadTime: 4
   magazineSize: 25
   magazineTotalSize: 75
@@ -26,5 +28,6 @@ MonoBehaviour:
   cameraScoped: 3.5
   cameraUnscoped: 2.8
   moveSpeed: 3
+  cost: 1000
   weaponType: 2
   weaponClass: 0

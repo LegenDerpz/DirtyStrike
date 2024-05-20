@@ -14,4 +14,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Login.unity
     guid: 6d6885edf7d486740aad7702f16fa7ba
+    path: Assets/Scenes/MainMenu.unity
+    guid: da79bfd3361228545b336462540dcfae
+  - enabled: 1
+    path: Assets/Scenes/TestMap.unity
+    guid: 11078f222715e744da770a6cc020ed23
+  - enabled: 1
+    path: Assets/Scenes/WeaponShop.unity
+    guid: 3968e502b9118c5468ac0d1b78753c30
   m_configObjects: {}
