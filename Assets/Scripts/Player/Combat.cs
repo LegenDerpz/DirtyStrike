@@ -103,9 +103,8 @@ public class Combat : MonoBehaviour
         foreach(Collider2D enemy in hitEnemies){
             Debug.Log("Hit " + enemy.tag);
             enemy.GetComponent<PlayerStats>().TakeDamage(inventory.GetWeapon().damage);
-            enemy.GetComponent<PlayerStats>().GetAttacker(gameObject);
+            enemy.GetComponent<PlayerStats>().SetAttackerInfo(gameObject);
         }
-
     }
 
     void OnDrawGizmosSelected(){
@@ -191,9 +190,5 @@ public class Combat : MonoBehaviour
 
     public void InterruptReload(){
         reloadInterrupted = true;
-    }
-
-    public Collider2D[] GetMeleeCollider(){
-        return hitEnemies;
     }
 }

@@ -7,8 +7,7 @@ public class PlayerStats : MonoBehaviour
     float currentHealth;
     public GameObject deathEffect;
     Bullet bullet;
-    Collider2D[] enemyMelee;
-
+    GameObject enemyMeleeAttacker;
     public bool isDead = false;
 
     void Start(){
@@ -19,9 +18,14 @@ public class PlayerStats : MonoBehaviour
         currentHealth -= damage;
 
         if(currentHealth <= 0){
-            //Get bullet owner
             StartCoroutine(DieDelay());
             Die();
+            if(enemyMeleeAttacker != null){
+                Debug.Log(enemyMeleeAttacker.GetComponent<PlayerData>().GetUsername() + " killed " +
+                gameObject.tag);
+                enemyMeleeAttacker.GetComponent<PlayerData>().AddPlayerKills(1);
+                enemyMeleeAttacker.GetComponent<Credits>().AddCredits(Credits.killReward);
+            }
         }
     }
 
@@ -35,13 +39,6 @@ public class PlayerStats : MonoBehaviour
             Debug.Log(bullet.GetBulletOwnerBody().GetComponent<Credits>().GetCredits());
         }
 
-        if(isDead && enemyMelee != null){
-            Debug.Log(enemyMelee[0].GetComponent<PlayerData>().GetUsername() + " killed " + gameObject.tag + "!");
-            enemyMelee[0].GetComponent<PlayerData>().AddPlayerKills(1);
-            enemyMelee[0].GetComponent<Credits>().AddCredits(Credits.killReward);
-            Debug.Log(enemyMelee[0].GetComponent<Credits>().GetCredits());
-        }
-        Debug.Log(enemyMelee);
     }
 
     public void Die(){
@@ -84,7 +81,10 @@ public class PlayerStats : MonoBehaviour
         this.currentHealth = currentHealth;
     }
 
-    public void GetAttacker(GameObject attacker){
-        enemyMelee = attacker.GetComponent<Combat>().GetMeleeCollider();
+    public void SetAttackerInfo(GameObject attacker){
+        enemyMeleeAttacker = attacker.gameObject;
+    }
+    public GameObject GetAttackerInfo(){
+        return enemyMeleeAttacker;
     }
 }

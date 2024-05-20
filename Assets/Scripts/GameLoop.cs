@@ -9,6 +9,7 @@ public class GameLoop : MonoBehaviour
     public int terrodirtScore = 0;
 
     string lobbyName = "lobbyX";
+    string lobbyWinner;
     int deadPurifierPlayers;
     int deadTerroDirtPlayers;
 
@@ -98,6 +99,11 @@ public class GameLoop : MonoBehaviour
         }
 
         if(GetPurifierScore() >= 3 || GetTerroDirtScore() >= 3){
+            if(GetPurifierScore() >= 3){
+                SetLobbyWinner("Purifiers");
+            }else if(GetTerroDirtScore() >= 3){
+                SetLobbyWinner("TerroDirts");
+            }
             StartCoroutine(Delay());
             GameEnd();
         }
@@ -133,6 +139,8 @@ public class GameLoop : MonoBehaviour
         ResetScore();
         ResetKills();
         ResetCredits();
+        DeletePlayerFiles();
+        Debug.Log("Game End! " + GetLobbyWinner() + " win! Returning to Main Menu...");
     }
 
     public void ResetScore(){
@@ -153,11 +161,32 @@ public class GameLoop : MonoBehaviour
         }
     }
 
+    public void DeletePlayerFiles(){
+        if(Directory.Exists(PlayerData.Player_Data_Folder)){
+            foreach(string userFile in Directory.GetFiles(PlayerData.Player_Data_Folder)){
+                foreach(string file in Directory.GetFiles(userFile.Replace(".meta", ""))){
+                    File.Delete(file.Replace(".meta", ""));
+                    Debug.Log(file.Replace(".meta", ""));
+                }
+                Directory.Delete(userFile.Replace(".meta", ""));
+                Debug.Log("Deleted " + userFile.Replace(".meta", ""));
+            }
+        }
+    }
+
     public int GetPurifierScore(){
         return PlayerPrefs.GetInt(lobbyName + "_" + "Purifier Score");
     }
     public int GetTerroDirtScore(){
         return PlayerPrefs.GetInt(lobbyName + "_" + "TerroDirt Score");
     }
-
+    public string GetLobbyName(){
+        return lobbyName;
+    }
+    public void SetLobbyWinner(string winnerTag){
+        lobbyWinner = winnerTag;
+    }
+    public string GetLobbyWinner(){
+        return lobbyWinner;
+    }
 }

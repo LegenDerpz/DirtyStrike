@@ -7,6 +7,9 @@ public class PlayerData : MonoBehaviour
 {
     public static readonly string Player_Data_Folder = Application.dataPath + "/PlayerData/";
     public string username = "username";
+    string purifierTag = "Purifier";
+    string terrodirtTag = "TerroDirt";
+    string customTag;
     public Inventory inv;
 
     public Vector2 position;
@@ -138,6 +141,15 @@ public class PlayerData : MonoBehaviour
     //Player Stats
     public string GetUsername(){
         return username;
+    }
+    public string GetPuriferTag(){
+        return purifierTag;
+    }
+    public string GetTerrodirtTag(){
+        return terrodirtTag;
+    }
+    public void SetCustomTag(string tagName){
+        customTag = GetUsername() + "_" + tagName;
     }
     public float GetPlayerHealth()
     {
