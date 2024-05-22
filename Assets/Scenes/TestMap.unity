@@ -503,6 +503,7 @@ GameObject:
   m_Component:
   - component: {fileID: 334880129}
   - component: {fileID: 334880128}
+  - component: {fileID: 334880130}
   m_Layer: 0
   m_Name: Player Camera
   m_TagString: Untagged
@@ -565,6 +566,14 @@ Transform:
   - {fileID: 1170623635}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &334880130
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334880127}
+  m_Enabled: 1
 --- !u!1 &371225636
 GameObject:
   m_ObjectHideFlags: 0
@@ -3749,6 +3758,7 @@ MonoBehaviour:
   inventory: {fileID: 1334742587}
   rb: {fileID: 1334742582}
   anim: {fileID: 0}
+  audioManager: {fileID: 0}
   isAttacking: 0
   waterBulletPrefab: {fileID: 6549975000145401404, guid: 10596f351e275f94dab1b2220a135453, type: 3}
   bulletForce: 30
@@ -4263,6 +4273,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Library: []
   m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 3cc2070b55131ab47b68f89f48baa466, type: 3}
+--- !u!1 &1429866151
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1429866152}
+  - component: {fileID: 1429866153}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1429866152
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429866151}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1429866153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429866151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebb2831cf0992684bacd9c2cab92d68c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Gunshot
+    clip: {fileID: 8300000, guid: 927d09d68aa670d4d9d1a567f7ac970c, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Footsteps_P
+    clip: {fileID: 8300000, guid: d519456ebc375734fb8c60e95ace4513, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
 --- !u!1 &1442923386
 GameObject:
   m_ObjectHideFlags: 0
@@ -27013,7 +27080,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1501813959}
   - component: {fileID: 1501813958}
-  - component: {fileID: 1501813957}
   - component: {fileID: 1501813961}
   - component: {fileID: 1501813960}
   m_Layer: 0
@@ -27023,14 +27089,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1501813957
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1501813956}
-  m_Enabled: 1
 --- !u!20 &1501813958
 Camera:
   m_ObjectHideFlags: 0
@@ -39680,6 +39738,7 @@ MonoBehaviour:
   inventory: {fileID: 2071476360}
   rb: {fileID: 2071476371}
   anim: {fileID: 2071476368}
+  audioManager: {fileID: 0}
   isAttacking: 0
   waterBulletPrefab: {fileID: 6549975000145401404, guid: 10596f351e275f94dab1b2220a135453, type: 3}
   bulletForce: 30
@@ -40298,6 +40357,10 @@ PrefabInstance:
       propertyPath: terroDirtScore
       value: 
       objectReference: {fileID: 1158491483}
+    - target: {fileID: 7068337588962882571, guid: 50ddc46f3dcd15144b14c5263afe3b0b, type: 3}
+      propertyPath: audioManager
+      value: 
+      objectReference: {fileID: 1429866153}
     - target: {fileID: 7807657708290730485, guid: 50ddc46f3dcd15144b14c5263afe3b0b, type: 3}
       propertyPath: m_Name
       value: Player
@@ -40416,6 +40479,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1429866152}
   - {fileID: 1243364318}
   - {fileID: 586755752}
   - {fileID: 490054998}

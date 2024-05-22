@@ -190,7 +190,7 @@ public class PlayerControls : MonoBehaviour
 
     IEnumerator OpenWeaponShop(){
         SceneManager.LoadSceneAsync("WeaponShop", LoadSceneMode.Additive);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.2f);
         GetComponent<Combat>().enabled = false;
         FindObjectOfType<WeaponShop>().SetShopOwnerObject(gameObject);
         shopOpened = true;

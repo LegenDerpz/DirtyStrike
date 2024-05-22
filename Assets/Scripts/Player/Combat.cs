@@ -8,6 +8,7 @@ public class Combat : MonoBehaviour
     public Inventory inventory;
     public Rigidbody2D rb;
     public AnimationHandler anim;
+    public AudioManager audioManager;
 
     //General
     float nextAttackTime = 0f;
@@ -90,6 +91,13 @@ public class Combat : MonoBehaviour
             }else{
                 isMoving = false;
             }
+
+            if(anim.animator.GetBool("IsMoving")){
+                audioManager.Play("Footsteps_P");
+                Debug.Log("Moving");
+            }else{
+                //audioManager.Stop("Footsteps_P");
+            }
         }catch(NullReferenceException){}
     }
 
@@ -153,6 +161,8 @@ public class Combat : MonoBehaviour
         }else if(inventory.GetWeapon().weaponClass == WeaponClass.Secondary){
             inventory.secondaryCurrentAmmo--;
         }
+        //audioManager.Play("Gunshot");
+        StartCoroutine(audioManager.PlayCoroutine("Gunshot"));
     }
 
     IEnumerator Reload(){
