@@ -2026,6 +2026,29 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 702562764}
   m_CullTransparentMesh: 1
+--- !u!1 &774779027 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7807657708290730485, guid: 50ddc46f3dcd15144b14c5263afe3b0b, type: 3}
+  m_PrefabInstance: {fileID: 5403815857159019420}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &774779038 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 837956049997491122, guid: 50ddc46f3dcd15144b14c5263afe3b0b, type: 3}
+  m_PrefabInstance: {fileID: 5403815857159019420}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &774779041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774779027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88ec52cfffe6a8c44a5f48afa9acc47e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 774779038}
 --- !u!1 &785390412
 GameObject:
   m_ObjectHideFlags: 0
@@ -3758,7 +3781,6 @@ MonoBehaviour:
   inventory: {fileID: 1334742587}
   rb: {fileID: 1334742582}
   anim: {fileID: 0}
-  audioManager: {fileID: 0}
   isAttacking: 0
   waterBulletPrefab: {fileID: 6549975000145401404, guid: 10596f351e275f94dab1b2220a135453, type: 3}
   bulletForce: 30
@@ -4322,13 +4344,41 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 927d09d68aa670d4d9d1a567f7ac970c, type: 3}
     volume: 0.2
     pitch: 1
+    time: 0
     loop: 0
+    isPlaying: 0
     source: {fileID: 0}
   - name: Footsteps_P
     clip: {fileID: 8300000, guid: d519456ebc375734fb8c60e95ace4513, type: 3}
-    volume: 1
+    volume: 0.5
     pitch: 1
+    time: 0
+    loop: 1
+    isPlaying: 0
+    source: {fileID: 0}
+  - name: Footsteps_T
+    clip: {fileID: 8300000, guid: 3971350df83c07f47ab31f77db747f2c, type: 3}
+    volume: 0.5
+    pitch: 1
+    time: 0
+    loop: 1
+    isPlaying: 0
+    source: {fileID: 0}
+  - name: MeleeAttack
+    clip: {fileID: 8300000, guid: a76c005880e2d6d41bdfa20af2a7b6df, type: 3}
+    volume: 0.2
+    pitch: 1
+    time: 0
     loop: 0
+    isPlaying: 0
+    source: {fileID: 0}
+  - name: Reload
+    clip: {fileID: 8300000, guid: ccdc4f45de351db44964706f9ba29a0d, type: 3}
+    volume: 0.2
+    pitch: 1
+    time: 0
+    loop: 0
+    isPlaying: 0
     source: {fileID: 0}
 --- !u!1 &1442923386
 GameObject:
@@ -39738,7 +39788,6 @@ MonoBehaviour:
   inventory: {fileID: 2071476360}
   rb: {fileID: 2071476371}
   anim: {fileID: 2071476368}
-  audioManager: {fileID: 0}
   isAttacking: 0
   waterBulletPrefab: {fileID: 6549975000145401404, guid: 10596f351e275f94dab1b2220a135453, type: 3}
   bulletForce: 30
@@ -40365,6 +40414,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7807657708290730485, guid: 50ddc46f3dcd15144b14c5263afe3b0b, type: 3}
+      propertyPath: m_TagString
+      value: Purifier
+      objectReference: {fileID: 0}
     - target: {fileID: 8976314546260619670, guid: 50ddc46f3dcd15144b14c5263afe3b0b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 958.678
@@ -40408,7 +40461,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7807657708290730485, guid: 50ddc46f3dcd15144b14c5263afe3b0b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 774779041}
   m_SourcePrefab: {fileID: 100100000, guid: 50ddc46f3dcd15144b14c5263afe3b0b, type: 3}
 --- !u!1001 &6425126896502095442
 PrefabInstance:

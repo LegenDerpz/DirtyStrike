@@ -29,5 +29,5 @@ MonoBehaviour:
   cameraUnscoped: 3
   moveSpeed: 3.5
   cost: 0
-  weaponType: 5
+  weaponType: 6
   weaponClass: 3

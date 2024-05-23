@@ -118,7 +118,10 @@ public class Inventory : MonoBehaviour
         return null;
     }
     public Weapon GetWeapon(){
-        return weapons[currentWeaponIndex];
+        if(currentWeaponIndex >= 0 && currentWeaponIndex < weapons.Count){
+            return weapons[currentWeaponIndex];
+        }
+        return null;
     }
 
     private int GetWeaponCount(WeaponClass weaponClass){

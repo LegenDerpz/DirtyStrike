@@ -48,8 +48,10 @@ public class PlayerHUD : MonoBehaviour
                 reloadCircle.gameObject.SetActive(true);
                 reloadCircle.value = combat.reloadProgress;
             }
-            if(!combat.isReloading && inv.IsGun()){
-                ammoIcon.enabled = true;
+            if(!combat.isReloading){
+                if(inv.IsGun()){
+                    ammoIcon.enabled = true;
+                }
                 reloadCircle.gameObject.SetActive(false);
             }  
         }catch(NullReferenceException){}

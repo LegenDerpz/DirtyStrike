@@ -16,8 +16,8 @@ public class TerroDirt : MonoBehaviour
     {
         //Plant Bomb
         try{
-            if(inv.GetWeapon(inv.currentWeaponIndex).weaponType == WeaponType.Bomb && Input.GetKeyDown(KeyCode.F) && FindObjectOfType<DirtBomb>() == null
-            && canPlant){
+            if(inv.GetWeapon().weaponType == WeaponType.Bomb && Input.GetKeyDown(KeyCode.F) && FindObjectOfType<DirtBomb>() == null
+            && canPlant && FindObjectOfType<RoundTimer>().buyPhaseEnded){
                 StartCoroutine(PlantBomb());
             }   
         }catch(NullReferenceException){}

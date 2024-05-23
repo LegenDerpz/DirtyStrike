@@ -1,16 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
     public string bulletOwner;
     public PlayerData bulletOwnerBody;
+    public AudioManager audioManager;
     public Rigidbody2D rb;
     public float damage = 20f;
     public float critChance = 0.1f;
     public float critMultiplier = 1.5f;
     public GameObject hitEffect;
+
+    void Awake(){
+        audioManager = FindObjectOfType<AudioManager>();
+        audioManager.Play("Gunshot");
+    }
 
     void OnCollisionEnter2D(Collision2D collider){        
         //GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
