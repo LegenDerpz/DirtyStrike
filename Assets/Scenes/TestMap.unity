@@ -4380,6 +4380,46 @@ MonoBehaviour:
     loop: 0
     isPlaying: 0
     source: {fileID: 0}
+  - name: BombPlanting
+    clip: {fileID: 8300000, guid: 0990b2673b948a948a675389d14e54f0, type: 3}
+    volume: 0.2
+    pitch: 1
+    time: 0
+    loop: 0
+    isPlaying: 0
+    source: {fileID: 0}
+  - name: BombDefused
+    clip: {fileID: 8300000, guid: 65acd4159a1253040bd7921800417e2d, type: 3}
+    volume: 0.2
+    pitch: 1
+    time: 0
+    loop: 0
+    isPlaying: 0
+    source: {fileID: 0}
+  - name: BombTicking
+    clip: {fileID: 8300000, guid: e67420edc15af7047bebd3b67fe46698, type: 3}
+    volume: 0.2
+    pitch: 1
+    time: 0
+    loop: 0
+    isPlaying: 0
+    source: {fileID: 0}
+  - name: BombExplode
+    clip: {fileID: 8300000, guid: 033d451f77be57a458da6abfa468df44, type: 3}
+    volume: 0.2
+    pitch: 1
+    time: 0
+    loop: 0
+    isPlaying: 0
+    source: {fileID: 0}
+  - name: MusicEnd
+    clip: {fileID: 8300000, guid: ee0a5fc8fc779ec4fa1fc4dc5da567f9, type: 3}
+    volume: 0.2
+    pitch: 1
+    time: 0
+    loop: 0
+    isPlaying: 0
+    source: {fileID: 0}
 --- !u!1 &1442923386
 GameObject:
   m_ObjectHideFlags: 0

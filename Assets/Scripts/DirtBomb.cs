@@ -60,6 +60,7 @@ public class DirtBomb : MonoBehaviour
 
     IEnumerator Explode(){
         hasExploded = true;
+        FindObjectOfType<AudioManager>().Play("BombExplode");
 
         yield return new WaitForSeconds(5f);
         
@@ -83,6 +84,7 @@ public class DirtBomb : MonoBehaviour
             if (elapsedTime >= defuseTime){
                 CancelDefuse();
                 defused = true;
+                FindObjectOfType<AudioManager>().Play("BombDefused");
                 FindObjectOfType<GameLoop>().FindWinCondition();
                 yield break;
             }      

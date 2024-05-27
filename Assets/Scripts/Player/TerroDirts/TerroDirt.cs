@@ -28,7 +28,8 @@ public class TerroDirt : MonoBehaviour
         float elapsedTime = 0f;
 
         float plantTime = dirtBomb.plantTime;
-        
+        FindObjectOfType<AudioManager>().Play("BombPlanting");
+
         while(elapsedTime < plantTime){
 
             if(!isPlanting){

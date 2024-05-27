@@ -38,7 +38,7 @@ public class GameLoop : MonoBehaviour
 
     //If bomb is defused || Purifier team is eliminated
     //Bomb explodes || TerroDirt team is eliminated while bomb is not planted || Time runs out and bomb is not planted
-    public void RestartRound()
+    public IEnumerator RestartRound()
     {
         //Save Player Data (e.g. current weapons)
         for (int i = 0; i < FindObjectsOfType<PlayerData>().Length; i++)
@@ -46,6 +46,7 @@ public class GameLoop : MonoBehaviour
             FindObjectsOfType<PlayerData>()[i].SaveWeaponData();
         }
 
+        yield return new WaitForSeconds(5f);
         
         //Restart Scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -80,7 +81,7 @@ public class GameLoop : MonoBehaviour
             StartCoroutine(Delay());
 
             if(GetPurifierScore() < 3 || GetTerroDirtScore() < 3){
-                RestartRound();
+                StartCoroutine(RestartRound());
             }
         }else if((deadTerroDirtPlayers >= GameObject.FindGameObjectsWithTag("TerroDirt").Length && !FindObjectOfType<DirtBomb>().isPlanted && FindObjectOfType<DirtBomb>() != null)
             || FindObjectOfType<DirtBomb>().defused
@@ -94,7 +95,7 @@ public class GameLoop : MonoBehaviour
             StartCoroutine(Delay());
 
             if(GetPurifierScore() < 3 || GetTerroDirtScore() < 3){
-                RestartRound();
+                StartCoroutine(RestartRound());
             }
         }
 
@@ -107,7 +108,6 @@ public class GameLoop : MonoBehaviour
             StartCoroutine(Delay());
             GameEnd();
         }
-
     }
 
     IEnumerator Delay(){
