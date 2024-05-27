@@ -9,7 +9,7 @@ public class DirtBomb : MonoBehaviour
     //TerroDirts
     public bool isPlanted = false;
     public float plantTime = 4f;
-    float explodeTime = 10f;
+    public float explodeTime = 10f;
     float elapsedTime = 0f;
     public bool hasExploded = false;
     
@@ -25,7 +25,7 @@ public class DirtBomb : MonoBehaviour
 
             if(elapsedTime >= explodeTime){
                 Debug.Log("Bomb has exploded.");
-                StartCoroutine(Explode());
+                Explode();
             }
         }
     }
@@ -58,11 +58,11 @@ public class DirtBomb : MonoBehaviour
         spriteRenderer.color = new Color(0.3867925f, 0.1511306f, 0.08940016f, 1f);
     }
 
-    IEnumerator Explode(){
+    void Explode(){
         hasExploded = true;
         FindObjectOfType<AudioManager>().Play("BombExplode");
 
-        yield return new WaitForSeconds(5f);
+        //yield return new WaitForSeconds(5f);
         
         FindObjectOfType<GameLoop>().FindWinCondition();
     }

@@ -63,6 +63,8 @@ public class TerroDirt : MonoBehaviour
                     GetComponent<PlayerControls>().ChangeWeaponSprite(inv.GetWeapon());
                 }
                 //Change Timer to Bomb Planted
+                FindObjectOfType<RoundTimer>().SetRemainingTime(dirtBomb.explodeTime);
+                FindObjectOfType<RoundTimer>().SwitchTimerToBombPlanted();
                 yield break;
             }
 
