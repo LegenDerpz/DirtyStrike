@@ -171,10 +171,10 @@ public class PlayerData : MonoBehaviour
         GetComponent<PlayerStats>().isDead = deathState;
     }
     public void AddPlayerKills(int killAmount){
-        PlayerPrefs.SetInt(username + "_" + "Kills", GetPlayerKills() + killAmount);
+        PlayerPrefs.SetInt(name.Replace("(Clone)", "") + "_" + "Kills", GetPlayerKills() + killAmount);
     }
     public int GetPlayerKills(){
-        return PlayerPrefs.GetInt(username + "_" + "Kills");
+        return PlayerPrefs.GetInt(name.Replace("(Clone)", "") + "_" + "Kills");
     }
     //
 

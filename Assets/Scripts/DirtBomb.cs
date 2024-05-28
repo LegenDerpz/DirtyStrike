@@ -1,15 +1,19 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DirtBomb : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
-    //public Sprite plantedSprite;
+    public Sprite plantedSprite;
+    public Sprite explodeSprite;
+    public Sprite defuseSprite;
+
 
     //TerroDirts
     public bool isPlanted = false;
     public float plantTime = 4f;
-    public float explodeTime = 10f;
+    public float explodeTime = 20f;
     float elapsedTime = 0f;
     public bool hasExploded = false;
     
@@ -22,6 +26,10 @@ public class DirtBomb : MonoBehaviour
     void Update(){
         if(isPlanted && !hasExploded){
             elapsedTime += Time.deltaTime;
+
+            if(elapsedTime < 10f){
+                ChangeSpriteExplode();
+            }
 
             if(elapsedTime >= explodeTime){
                 Debug.Log("Bomb has exploded.");
@@ -53,16 +61,25 @@ public class DirtBomb : MonoBehaviour
         }
     }
 
-    public void ChangeSprite(){
-        //spriteRenderer.sprite = plantedSprite;
-        spriteRenderer.color = new Color(0.3867925f, 0.1511306f, 0.08940016f, 1f);
+    public void ChangeSpritePlanted(){
+        spriteRenderer.sprite = plantedSprite;
+        //spriteRenderer.color = new Color(0.3867925f, 0.1511306f, 0.08940016f, 1f);
+    }
+    
+    public void ChangeSpriteExplode(){
+        spriteRenderer.sprite = explodeSprite;
+    }
+
+    public void ChangeSpriteDefuse(){
+        spriteRenderer.sprite = defuseSprite;
     }
 
     void Explode(){
         hasExploded = true;
+        GetComponent<Animator>().SetBool("HasExploded", true);
+        GetComponent<Animator>().SetTrigger("Explode");
         FindObjectOfType<AudioManager>().Play("BombExplode");
-
-        //yield return new WaitForSeconds(5f);
+        StartCoroutine(MudSplatter());
         
         FindObjectOfType<GameLoop>().FindWinCondition();
     }
@@ -85,6 +102,7 @@ public class DirtBomb : MonoBehaviour
                 CancelDefuse();
                 defused = true;
                 FindObjectOfType<AudioManager>().Play("BombDefused");
+                ChangeSpriteDefuse();
                 FindObjectOfType<GameLoop>().FindWinCondition();
                 yield break;
             }      
@@ -95,5 +113,13 @@ public class DirtBomb : MonoBehaviour
 
     public void CancelDefuse(){
         isDefusing = false;
+    }
+
+    IEnumerator MudSplatter(){
+        SceneManager.LoadSceneAsync("DirtSplatter", LoadSceneMode.Additive);
+
+        yield return new WaitForSeconds(5f);
+
+        SceneManager.UnloadSceneAsync("DirtSplatter");
     }
 }

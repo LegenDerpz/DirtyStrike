@@ -34,7 +34,7 @@ public class RoundTimer : MonoBehaviour
 
         timer.text = Math.Round(remainingTime, 2).ToString().Replace(".", ":");
 
-        if(remainingTime <= 0 && buyPhaseEnded){
+        if(remainingTime <= 0 && buyPhaseEnded && !FindObjectOfType<DirtBomb>().isPlanted){
             timeRanOut = true;
             timer.enabled = false;
             FindObjectOfType<GameLoop>().FindWinCondition();

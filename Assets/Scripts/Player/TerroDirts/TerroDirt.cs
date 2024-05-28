@@ -44,7 +44,7 @@ public class TerroDirt : MonoBehaviour
                 Instantiate(inv.GetWeapon(3).prefab, rb.position, Quaternion.identity);
                 FindObjectOfType<DirtBomb>().isPlanted = true;
                 inv.weapons[3] = null;
-                FindObjectOfType<DirtBomb>().ChangeSprite();
+                FindObjectOfType<DirtBomb>().ChangeSpritePlanted();
 
                 if(inv.weapons[0] != null){
                     GetComponent<AnimationHandler>().animator.SetBool("IsGun", true);

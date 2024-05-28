@@ -7,6 +7,8 @@ public class PlayerHUD : MonoBehaviour
 {
     public Inventory inv;
     public Combat combat;
+    public TextMeshProUGUI hpValue;
+    public Slider hpSlider;
     public TextMeshProUGUI weapon;
     public TextMeshProUGUI currentAmmo;
     public Image ammoIcon;
@@ -53,12 +55,14 @@ public class PlayerHUD : MonoBehaviour
                     ammoIcon.enabled = true;
                 }
                 reloadCircle.gameObject.SetActive(false);
-            }  
+            }
         }catch(NullReferenceException){}
 
         purifierScore.text = p_score.ToString();
         terroDirtScore.text = t_score.ToString();
-        kills.text = "Kills: " + GetComponent<PlayerData>().GetPlayerKills().ToString();
+        kills.text = GetComponent<PlayerData>().GetPlayerKills().ToString();
+
+        hpValue.text = GetComponent<PlayerData>().GetCurrentHealth().ToString();
     }
 
     void FixedUpdate(){
@@ -79,5 +83,14 @@ public class PlayerHUD : MonoBehaviour
                 defusingCirle.gameObject.SetActive(false);
             }
         }catch(NullReferenceException){}
+    }
+
+    public void SetMaxHealth(float health){
+        hpSlider.maxValue = health;
+        hpSlider.value = health;
+    }
+
+    public void SetHealth(float health){
+        hpSlider.value = health;
     }
 }

@@ -14,7 +14,7 @@ public class Combat : MonoBehaviour
     public bool isAttacking = false;
 
     //Shooting
-    public GameObject waterBulletPrefab;
+    public GameObject bulletPrefab;
     public float bulletForce = 30f;
 
     int reloadAmount;
@@ -101,7 +101,7 @@ public class Combat : MonoBehaviour
         hitEnemies = Physics2D.OverlapCircleAll(firePoint.position, attackRange, layerMask);
 
         foreach(Collider2D enemy in hitEnemies){
-            Debug.Log("Hit " + enemy.tag);
+            Debug.Log("Hit " + enemy.name.Replace("(Clone)", ""));
             enemy.GetComponent<PlayerStats>().TakeDamage(inventory.GetWeapon().damage);
             enemy.GetComponent<PlayerStats>().SetAttackerInfo(gameObject);
         }
@@ -136,12 +136,13 @@ public class Combat : MonoBehaviour
         float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
         Quaternion spreadRotation = Quaternion.Euler(0, 0, angle-90f);
 
-        waterBulletPrefab.GetComponent<Bullet>().bulletOwner = GetComponent<PlayerData>().username;
-        waterBulletPrefab.GetComponent<Bullet>().bulletOwnerBody = GetComponent<PlayerData>();
+        bulletPrefab.GetComponent<Bullet>().bulletOwner = GetComponent<PlayerData>().username;
+        bulletPrefab.GetComponent<Bullet>().bulletOwnerBody = GetComponent<PlayerData>();
+        bulletPrefab.GetComponent<Bullet>().spriteRenderer = bulletPrefab.GetComponent<SpriteRenderer>();
+        bulletPrefab.GetComponent<Bullet>().spriteRenderer.sprite = bulletPrefab.GetComponent<Bullet>().ChangeSprite();
 
-        GameObject waterBullet = Instantiate(waterBulletPrefab, firePoint.position, spreadRotation);
-        Rigidbody2D rb = waterBullet.GetComponent<Rigidbody2D>();
-        
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, spreadRotation);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
         if(inventory.GetWeapon().weaponType == WeaponType.Sniper){
             bulletForce = 60f;

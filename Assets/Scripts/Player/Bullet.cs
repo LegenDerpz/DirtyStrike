@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public SpriteRenderer spriteRenderer;
+    public Sprite waterBullet;
+    public Sprite dirtBullet;
+
     public string bulletOwner;
     public PlayerData bulletOwnerBody;
     public AudioManager audioManager;
@@ -12,6 +16,8 @@ public class Bullet : MonoBehaviour
     public GameObject hitEffect;
 
     void Awake(){
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        ChangeSprite();
         audioManager = FindObjectOfType<AudioManager>();
         audioManager.Play("Gunshot");
     }
@@ -51,5 +57,15 @@ public class Bullet : MonoBehaviour
     }
     public PlayerData GetBulletOwnerBody(){
         return bulletOwnerBody;
+    }
+
+    public Sprite ChangeSprite(){
+        if(GetBulletOwnerBody().gameObject.CompareTag("Purifier")){
+            return waterBullet;
+        }else if(GetBulletOwnerBody().gameObject.CompareTag("TerroDirt")){
+            return dirtBullet;
+        }else{
+            return waterBullet;
+        }
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DirtBomb
   m_EditorClassIdentifier: 
   prefab: {fileID: 6048660138840665165, guid: 2abb94dc940dc9b49822ee3c1de89970, type: 3}
-  sprite: {fileID: -2413806693520163455, guid: 69c7f9fd2bc891b4faceda5312f64d55, type: 3}
+  sprite: {fileID: 21300000, guid: cd351d8520f5a864091fe8a08f8aba1c, type: 3}
   name: DirtBomb
   damage: 0
   fireRate: 0
