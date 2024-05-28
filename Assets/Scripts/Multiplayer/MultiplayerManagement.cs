@@ -9,13 +9,14 @@ using UnityEngine;
 public class MultiplayerManagement : MonoBehaviour
 {
 
+    [SerializeField]
     Uri uri = new Uri("http://localhost:7000");
 
     SocketIOUnity socket;
 
     GameObject playerObj;
     Vector2 playerPosition;
-    Quaternion playerRotation;
+    float playerRotation;
 
     void Start()
     {
@@ -38,25 +39,27 @@ public class MultiplayerManagement : MonoBehaviour
 
         socket.On("other_players_transform", (data) => {           
             UnityThread.executeInUpdate(() => {
-
                     string resPlayerTransform = data.GetValue<string>();
                     PlayerTransform playerTransform = JsonConvert.DeserializeObject<PlayerTransform>(resPlayerTransform);
                     GameObject[] playerTerroDirt = GameObject.FindGameObjectsWithTag("TerroDirt");
                     GameObject[] playerPurifier = GameObject.FindGameObjectsWithTag("Purifier");
+                    print(playerTransform);
                     
                     for (int i = 0; i < playerTerroDirt.Length; i++)
                     {
-                        if(playerTerroDirt[i].name == playerTransform.username+"(Clone)"){
+                        if(playerTerroDirt[i].CompareTag("Me")) continue;
+                        if(playerTerroDirt[i].name == (playerTransform.username + "(Clone)")){
                             playerTerroDirt[i].transform.position = new Vector2(playerTransform.player_position.x, playerTransform.player_position.y);
-                            playerTerroDirt[i].transform.position = new Vector2(playerTransform.player_position.x, playerTransform.player_position.y);
+                            playerTerroDirt[i].GetComponent<Rigidbody2D>().rotation = playerTransform.player_rotation;
                         }
                     }
 
                     for (int i = 0; i < playerPurifier.Length; i++)
                     {
-                        if(playerPurifier[i].name == playerTransform.username+"(Clone)"){
+                        if(playerPurifier[i].CompareTag("Me")) continue;
+                        if(playerPurifier[i].name == (playerTransform.username + "(Clone)")){
                             playerPurifier[i].transform.position = new Vector2(playerTransform.player_position.x, playerTransform.player_position.y);
-                            playerPurifier[i].transform.position = new Vector2(playerTransform.player_position.x, playerTransform.player_position.y);
+                            playerPurifier[i].GetComponent<Rigidbody2D>().rotation = playerTransform.player_rotation;
                         }
                     }
 
@@ -68,16 +71,16 @@ public class MultiplayerManagement : MonoBehaviour
     {
 
         playerPosition = playerObj.GetComponent<Transform>().position;
-        playerRotation = playerObj.GetComponent<Transform>().rotation;
+        playerRotation = playerObj.GetComponent<Rigidbody2D>().rotation;
         
         string currentUsername = PlayerPrefs.GetString("username");
 
         string playerTransform =  @"{{
-            ""username"": ""{5}"",
-            ""player_position"": {{""x"": {0}, ""y"": {1}}},
-            ""player_rotation"": {{""x"": {2}, ""y"": {3}, ""z"": {4}}}
+            ""username"": ""{0}"",
+            ""player_position"": {{""x"": {1}, ""y"": {2}}},
+            ""player_rotation"": {3}
             }}";
 
-        socket.Emit("player_transform", string.Format(playerTransform, playerPosition.x, playerPosition.y, playerRotation.x, playerRotation.y, playerRotation.z, currentUsername));
+        socket.Emit("player_transform", string.Format(playerTransform,  currentUsername, playerPosition.x, playerPosition.y, playerRotation));
     }
 }
