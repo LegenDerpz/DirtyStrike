@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using SocketIOClient;
 using SocketIOClient.Newtonsoft.Json;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MultiplayerManagement : MonoBehaviour
@@ -17,15 +19,46 @@ public class MultiplayerManagement : MonoBehaviour
 
     void Start()
     {
-        socket = new SocketIOUnity(uri);
+
+        string currentUsername = PlayerPrefs.GetString("username");
+
+        socket = new SocketIOUnity(uri, new SocketIOOptions{
+            Query = new Dictionary<string, string>
+            {
+                {"username", currentUsername},
+                {"team", "Purifier"},
+                {"room", "A"}
+            }
+        });
         socket.Connect();
 
         this.socket.JsonSerializer = new NewtonsoftJsonSerializer();
 
         playerObj = GameObject.FindGameObjectWithTag("Me");
 
-        socket.On("other_players_transform", (data) => {
+        socket.On("other_players_transform", (data) => {           
             UnityThread.executeInUpdate(() => {
+
+                    string resPlayerTransform = data.GetValue<string>();
+                    PlayerTransform playerTransform = JsonConvert.DeserializeObject<PlayerTransform>(resPlayerTransform);
+                    GameObject[] playerTerroDirt = GameObject.FindGameObjectsWithTag("TerroDirt");
+                    GameObject[] playerPurifier = GameObject.FindGameObjectsWithTag("Purifier");
+                    
+                    for (int i = 0; i < playerTerroDirt.Length; i++)
+                    {
+                        if(playerTerroDirt[i].name == playerTransform.username+"(Clone)"){
+                            playerTerroDirt[i].transform.position = new Vector2(playerTransform.player_position.x, playerTransform.player_position.y);
+                            playerTerroDirt[i].transform.position = new Vector2(playerTransform.player_position.x, playerTransform.player_position.y);
+                        }
+                    }
+
+                    for (int i = 0; i < playerPurifier.Length; i++)
+                    {
+                        if(playerPurifier[i].name == playerTransform.username+"(Clone)"){
+                            playerPurifier[i].transform.position = new Vector2(playerTransform.player_position.x, playerTransform.player_position.y);
+                            playerPurifier[i].transform.position = new Vector2(playerTransform.player_position.x, playerTransform.player_position.y);
+                        }
+                    }
 
             });
         });
@@ -36,13 +69,15 @@ public class MultiplayerManagement : MonoBehaviour
 
         playerPosition = playerObj.GetComponent<Transform>().position;
         playerRotation = playerObj.GetComponent<Transform>().rotation;
+        
+        string currentUsername = PlayerPrefs.GetString("username");
 
         string playerTransform =  @"{{
-            username: ""awit"",
-            player_position: {{x: {0}, y: {1}}}
-            player_rotation: {{x: {2}, y: {3}, z: {4}}}
+            ""username"": ""{5}"",
+            ""player_position"": {{""x"": {0}, ""y"": {1}}},
+            ""player_rotation"": {{""x"": {2}, ""y"": {3}, ""z"": {4}}}
             }}";
 
-        socket.Emit("player_transform", string.Format(playerTransform, playerPosition.x, playerPosition.y, playerRotation.x, playerRotation.y, playerRotation.z));
+        socket.Emit("player_transform", string.Format(playerTransform, playerPosition.x, playerPosition.y, playerRotation.x, playerRotation.y, playerRotation.z, currentUsername));
     }
 }
