@@ -15,12 +15,10 @@ public class InitializePlayer : MonoBehaviour
 {
 
     [SerializeField]
-
-    string API_URL = "http://192.168.218.201:3000/rooms/A";
-
+    string API_URL = "http://192.168.218.201:3000/rooms/";
 
     async void Start()
-    {
+    {        
         string resPlayers = await GetPlayers();
         List<Players> players = JsonConvert.DeserializeObject<List<Players>>(resPlayers);
         
@@ -42,6 +40,10 @@ public class InitializePlayer : MonoBehaviour
 
     
     async Task<string> GetPlayers(){
+
+        string room = PlayerPrefs.GetString("currentJoinedRoom");
+        API_URL += room;
+
         using var httpClient = new HttpClient();
 
         var res = await httpClient.GetAsync(API_URL);
