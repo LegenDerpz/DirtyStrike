@@ -18,32 +18,45 @@ public class MultiplayerManagement : MonoBehaviour
     Vector2 playerPosition;
     float playerRotation;
 
+    string currentUsername;
+    string team;
+    string room;
+
+    void Awake(){
+        playerObj = GameObject.FindGameObjectWithTag("Me");
+        
+        currentUsername = PlayerPrefs.GetString("username");
+        team = PlayerPrefs.GetString("selectedTeam");
+        room  = PlayerPrefs.GetString("currentJoinedRoom");
+
+        playerObj.name = currentUsername;
+        playerObj.tag = team;
+
+    }
+
     void Start()
     {
-
-        string currentUsername = PlayerPrefs.GetString("username");
 
         socket = new SocketIOUnity(uri, new SocketIOOptions{
             Query = new Dictionary<string, string>
             {
                 {"username", currentUsername},
-                {"team", "Purifier"},
-                {"room", "A"}
+                {"team", team},
+                {"room", room}
             }
         });
         socket.Connect();
 
         this.socket.JsonSerializer = new NewtonsoftJsonSerializer();
 
-        playerObj = GameObject.FindGameObjectWithTag("Me");
-
         socket.On("other_players_transform", (data) => {           
             UnityThread.executeInUpdate(() => {
+                    
                     string resPlayerTransform = data.GetValue<string>();
                     PlayerTransform playerTransform = JsonConvert.DeserializeObject<PlayerTransform>(resPlayerTransform);
+                    
                     GameObject[] playerTerroDirt = GameObject.FindGameObjectsWithTag("TerroDirt");
                     GameObject[] playerPurifier = GameObject.FindGameObjectsWithTag("Purifier");
-                    print(playerTransform);
                     
                     for (int i = 0; i < playerTerroDirt.Length; i++)
                     {
