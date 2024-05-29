@@ -41,6 +41,9 @@ public class InitializePlayer : MonoBehaviour
 
     public SocketIOUnity Socket { get => socket; }
 
+    int pspawn = 0;
+    int tspawn = 0;
+
     async void Awake()
     {        
         
@@ -55,7 +58,7 @@ public class InitializePlayer : MonoBehaviour
 
         string meUsername = PlayerPrefs.GetString("username");
 
-        for(int i = 0, p = 0, t = 0; i < players.Length; i++){           
+        for(int i = 0; i < players.Length; i++){           
             
             Players player = players[i];
             GameObject playerPrefab;
@@ -98,8 +101,8 @@ public class InitializePlayer : MonoBehaviour
                 playerPrefab.GetComponent<Combat>().layerMask |= 2 << layer;
                 gameObject.layer = 10;
 
-                Instantiate(playerPrefab, PSpawns[p].transform.position, Quaternion.identity);
-                p++;
+                Instantiate(playerPrefab, PSpawns[pspawn].transform.position, Quaternion.identity);
+                pspawn++;
             }
             
             if(player.team.Equals("TerroDirt")){
@@ -129,8 +132,8 @@ public class InitializePlayer : MonoBehaviour
                 playerPrefab.GetComponent<Combat>().layerMask |= 1 << layer; //Can Only Damage Purifier Players
                 gameObject.layer = 11;
 
-                Instantiate(playerPrefab, TSpawns[t].transform.position, Quaternion.identity);
-                t++;
+                Instantiate(playerPrefab, TSpawns[tspawn].transform.position, Quaternion.identity);
+                tspawn++;
             }
 
         }       
@@ -158,6 +161,31 @@ public class InitializePlayer : MonoBehaviour
         Socket.Connect();
 
         this.Socket.JsonSerializer = new NewtonsoftJsonSerializer();
+
+        Socket.On("client_player_join", (data) => {
+           UnityThread.executeInUpdate(() => {
+                string resPlayerJoined = data.GetValue<string>();
+                print(resPlayerJoined);
+                
+                PlayerJoin playerJoined = JsonConvert.DeserializeObject<PlayerJoin>(resPlayerJoined);
+
+                GameObject playerJoinedObj = Resources.Load<GameObject>("Prefabs/Player");
+                playerJoinedObj.tag = playerJoined.team;
+                playerJoinedObj.name = playerJoined.username;
+
+                print(playerJoinedObj);
+
+                if(playerJoined.team.Equals("Purifier")){
+                    Instantiate(playerJoinedObj, PSpawns[pspawn].transform.position, Quaternion.identity);
+                    pspawn++;
+                }
+
+                if(playerJoined.team.Equals("TerroDirt")){
+                    Instantiate(playerJoinedObj, TSpawns[tspawn].transform.position, Quaternion.identity);
+                    tspawn++;
+                }
+           });
+        });
 
         Socket.On("other_players_transform", (data) => {           
             UnityThread.executeInUpdate(() => {
@@ -192,8 +220,16 @@ public class InitializePlayer : MonoBehaviour
                 
                 string resBulletTransform = data.GetValue<string>();
                 BulletTransform bulletTransform = JsonConvert.DeserializeObject<BulletTransform>(resBulletTransform);
-                GameObject bulletPrefab = Resources.Load<GameObject>("Prefabs/Water_Bullet");
-                bulletPrefab.transform.position = new Vector2(bulletTransform.bullet_position.x, bulletTransform.bullet_position.y);
+
+                for(int i = 0; i < players.Length; i++){           
+                    Players player = players[i];
+                    if(player.username == bulletTransform.username){
+                        GameObject playerObj = GameObject.Find(player.username + "(Clone)");
+                        Combat playerCombat = playerObj.GetComponent<Combat>();
+                        playerCombat.Shoot2();
+                        break;
+                    }
+                }
 
             });
         });
@@ -204,7 +240,6 @@ public class InitializePlayer : MonoBehaviour
     {
 
         if(mePlayerObj != null){
-            print(mePlayerObj);
             string currentUsername = PlayerPrefs.GetString("username");
 
             playerPosition = mePlayerObj.GetComponent<Transform>().position;
@@ -217,7 +252,6 @@ public class InitializePlayer : MonoBehaviour
                 }}";
             
             Socket.Emit("player_transform", string.Format(playerTransform,  currentUsername, playerPosition.x, playerPosition.y, playerRotation));
-
         }
     }
     
