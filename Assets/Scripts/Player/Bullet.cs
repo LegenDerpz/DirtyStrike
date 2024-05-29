@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class Bullet : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
@@ -15,11 +16,18 @@ public class Bullet : MonoBehaviour
     public float critMultiplier = 1.5f;
     public GameObject hitEffect;
 
+    InitializePlayer initializePlayer;
+
+    string currentUsername;
+
     void Awake(){
         spriteRenderer = GetComponent<SpriteRenderer>();
         ChangeSprite();
         audioManager = FindObjectOfType<AudioManager>();
         audioManager.Play("Gunshot");
+
+        initializePlayer = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<InitializePlayer>();
+        currentUsername = PlayerPrefs.GetString("username");
     }
 
     void OnCollisionEnter2D(Collision2D collider){        
@@ -27,7 +35,7 @@ public class Bullet : MonoBehaviour
 
         PlayerStats player = collider.gameObject.GetComponent<PlayerStats>();
         if(player != null){
-            if(Random.value <= critChance){
+            if(UnityEngine.Random.value <= critChance){
                 Debug.Log("Critical Hit!");
                 player.TakeDamage(damage * critMultiplier);
             }else{
@@ -38,6 +46,19 @@ public class Bullet : MonoBehaviour
         
         //Destroy(effect, 0.5f);
         Destroy(gameObject);
+    }
+
+    void Update(){
+
+        Vector2 bulletPosition = gameObject.transform.position;
+
+        string bulletTransform = @"
+        {{
+            ""username"": ""{0}"",
+            ""bullet_position"": {{""x"": {1}, ""y"": {2}}}
+        }}";
+
+        initializePlayer.Socket.Emit("bullet_transfrom", string.Format(bulletTransform, currentUsername, bulletPosition.x, bulletPosition.y));
     }
 
     public Vector2 GetBulletPosition(){

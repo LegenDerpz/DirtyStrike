@@ -39,6 +39,8 @@ public class InitializePlayer : MonoBehaviour
 
     CinemachineVirtualCamera cinemachineVCam;
 
+    public SocketIOUnity Socket { get => socket; }
+
     async void Awake()
     {        
         
@@ -153,11 +155,11 @@ public class InitializePlayer : MonoBehaviour
             }
         });
         
-        socket.Connect();
+        Socket.Connect();
 
-        this.socket.JsonSerializer = new NewtonsoftJsonSerializer();
+        this.Socket.JsonSerializer = new NewtonsoftJsonSerializer();
 
-        socket.On("other_players_transform", (data) => {           
+        Socket.On("other_players_transform", (data) => {           
             UnityThread.executeInUpdate(() => {
                     
                     string resPlayerTransform = data.GetValue<string>();
@@ -185,6 +187,16 @@ public class InitializePlayer : MonoBehaviour
             });
         });
   
+        Socket.On("other_bullet_transform", (data) => {
+            UnityThread.executeInUpdate(() => {
+                
+                string resBulletTransform = data.GetValue<string>();
+                BulletTransform bulletTransform = JsonConvert.DeserializeObject<BulletTransform>(resBulletTransform);
+                GameObject bulletPrefab = Resources.Load<GameObject>("Prefabs/Water_Bullet");
+                bulletPrefab.transform.position = new Vector2(bulletTransform.bullet_position.x, bulletTransform.bullet_position.y);
+
+            });
+        });
     
     }
 
@@ -204,7 +216,7 @@ public class InitializePlayer : MonoBehaviour
                 ""player_rotation"": {3}
                 }}";
             
-            socket.Emit("player_transform", string.Format(playerTransform,  currentUsername, playerPosition.x, playerPosition.y, playerRotation));
+            Socket.Emit("player_transform", string.Format(playerTransform,  currentUsername, playerPosition.x, playerPosition.y, playerRotation));
 
         }
     }
