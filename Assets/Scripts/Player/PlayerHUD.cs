@@ -7,8 +7,8 @@ public class PlayerHUD : MonoBehaviour
 {
     public Inventory inv;
     public Combat combat;
-    
-    [SerializeField]
+    public TextMeshProUGUI hpValue;
+    public Slider hpSlider;
     TextMeshProUGUI weapon;
     TextMeshProUGUI currentAmmo;
     Image ammoIcon;
@@ -18,16 +18,7 @@ public class PlayerHUD : MonoBehaviour
 
     TextMeshProUGUI purifierScore;
     TextMeshProUGUI terroDirtScore;
-    /*
-    GameObject weapon;
-    GameObject currentAmmo;
-    GameObject ammoIcon;
-    GameObject reloadCircle;
-    GameObject plantCircle;
-    GameObject defusingCircle;
-    GameObject purifierScore;
-    GameObject terroDirtScore;
-    */
+
 
     int p_score;
     int t_score;
@@ -76,12 +67,14 @@ public class PlayerHUD : MonoBehaviour
                     ammoIcon.enabled = true;
                 }
                 reloadCircle.gameObject.SetActive(false);
-            }  
+            }
         }catch(NullReferenceException){}
 
         purifierScore.text = p_score.ToString();
         terroDirtScore.text = t_score.ToString();
-        kills.text = "Kills: " + GetComponent<PlayerData>().GetPlayerKills().ToString();
+        kills.text = GetComponent<PlayerData>().GetPlayerKills().ToString();
+
+        hpValue.text = GetComponent<PlayerData>().GetCurrentHealth().ToString();
     }
 
     void FixedUpdate(){
@@ -102,5 +95,14 @@ public class PlayerHUD : MonoBehaviour
                 defusingCirle.gameObject.SetActive(false);
             }
         }catch(NullReferenceException){}
+    }
+
+    public void SetMaxHealth(float health){
+        hpSlider.maxValue = health;
+        hpSlider.value = health;
+    }
+
+    public void SetHealth(float health){
+        hpSlider.value = health;
     }
 }

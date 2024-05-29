@@ -38,14 +38,15 @@ public class GameLoop : MonoBehaviour
 
     //If bomb is defused || Purifier team is eliminated
     //Bomb explodes || TerroDirt team is eliminated while bomb is not planted || Time runs out and bomb is not planted
-    public void RestartRound()
+    public IEnumerator RestartRound()
     {
+        yield return new WaitForSeconds(5f);
+        
         //Save Player Data (e.g. current weapons)
         for (int i = 0; i < FindObjectsOfType<PlayerData>().Length; i++)
         {
             FindObjectsOfType<PlayerData>()[i].SaveWeaponData();
         }
-
         
         //Restart Scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -75,26 +76,20 @@ public class GameLoop : MonoBehaviour
         {
             Debug.Log("TerroDirts Round Win");
 
-            AddTerroDirtScore();
-            AllocateRoundEndCredits("TerroDirt", "Purifier");
-            StartCoroutine(Delay());
-
             if(GetPurifierScore() < 3 || GetTerroDirtScore() < 3){
-                RestartRound();
+                AddTerroDirtScore();
+                AllocateRoundEndCredits("TerroDirt", "Purifier");
+                StartCoroutine(RestartRound());
             }
         }else if((deadTerroDirtPlayers >= GameObject.FindGameObjectsWithTag("TerroDirt").Length && !FindObjectOfType<DirtBomb>().isPlanted && FindObjectOfType<DirtBomb>() != null)
             || FindObjectOfType<DirtBomb>().defused
             || (!FindObjectOfType<DirtBomb>().isPlanted && FindObjectOfType<RoundTimer>().timeRanOut)){
             Debug.Log("Purifiers Round Win");
-            Debug.Log(GameObject.FindGameObjectsWithTag("TerroDirt").Length);
-            Debug.Log(deadTerroDirtPlayers);
-
-            AddPurifierScore();
-            AllocateRoundEndCredits("Purifier", "TerroDirt");
-            StartCoroutine(Delay());
 
             if(GetPurifierScore() < 3 || GetTerroDirtScore() < 3){
-                RestartRound();
+                AddPurifierScore();
+                AllocateRoundEndCredits("Purifier", "TerroDirt");
+                StartCoroutine(RestartRound());
             }
         }
 
@@ -104,15 +99,8 @@ public class GameLoop : MonoBehaviour
             }else if(GetTerroDirtScore() >= 3){
                 SetLobbyWinner("TerroDirts");
             }
-            StartCoroutine(Delay());
-            GameEnd();
+            StartCoroutine(GameEnd());
         }
-
-    }
-
-    IEnumerator Delay(){
-        yield return new WaitForSeconds(10f);
-        Debug.Log("Delay");
     }
 
     public void AddTerroDirtScore()
@@ -132,15 +120,23 @@ public class GameLoop : MonoBehaviour
     }
 
     //First to 3 Points Wins
-    public void GameEnd()
+    IEnumerator GameEnd()
     {
         //Show Game Summary GUI
         //Main Menu Button
+        FindObjectOfType<AudioManager>().Play("MusicEnd");
         ResetScore();
         ResetKills();
         ResetCredits();
         DeletePlayerFiles();
         Debug.Log("Game End! " + GetLobbyWinner() + " win! Returning to Main Menu...");
+        yield return new WaitForSeconds(3f);
+
+        SceneManager.LoadSceneAsync("GameEnd", LoadSceneMode.Additive);
+
+        yield return new WaitForSeconds(10f);
+
+        //SceneManager.LoadScene("MainMenu");
     }
 
     public void ResetScore(){
@@ -150,7 +146,7 @@ public class GameLoop : MonoBehaviour
     }
     public void ResetKills(){
         foreach(PlayerData player in FindObjectsOfType<PlayerData>()){
-            PlayerPrefs.SetInt(player.username + "_" + "Kills", 0);
+            PlayerPrefs.SetInt(player.gameObject.name.Replace("(Clone)", "") + "_" + "Kills", 0);
             PlayerPrefs.Save();
         }
     }

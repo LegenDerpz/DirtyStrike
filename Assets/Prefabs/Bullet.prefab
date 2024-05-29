@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3190350962927317005}
   - component: {fileID: 9196395056975933373}
   m_Layer: 0
-  m_Name: Water_Bullet
+  m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 770a0fe085190ce4082369d28c632916, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f038d2748d77a8f478a197966da0f42c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -150,7 +150,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.32, y: 0.63}
+    oldSize: {x: 0.6191406, y: 0.62109375}
     newSize: {x: 0.63, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -171,6 +171,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bf520169122dad4a9f5e1f8adb5e091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 4914756540318461252}
+  waterBullet: {fileID: 21300000, guid: 6f219623fffc53f4691c3fcc2828c301, type: 3}
+  dirtBullet: {fileID: 21300000, guid: f038d2748d77a8f478a197966da0f42c, type: 3}
+  bulletOwner: username
+  bulletOwnerBody: {fileID: 0}
+  audioManager: {fileID: 0}
   rb: {fileID: 5265586670905555734}
   damage: 20
   critChance: 0.1

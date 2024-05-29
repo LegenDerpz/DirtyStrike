@@ -28,7 +28,8 @@ public class TerroDirt : MonoBehaviour
         float elapsedTime = 0f;
 
         float plantTime = dirtBomb.plantTime;
-        
+        FindObjectOfType<AudioManager>().Play("BombPlanting");
+
         while(elapsedTime < plantTime){
 
             if(!isPlanting){
@@ -43,7 +44,7 @@ public class TerroDirt : MonoBehaviour
                 Instantiate(inv.GetWeapon(3).prefab, rb.position, Quaternion.identity);
                 FindObjectOfType<DirtBomb>().isPlanted = true;
                 inv.weapons[3] = null;
-                FindObjectOfType<DirtBomb>().ChangeSprite();
+                FindObjectOfType<DirtBomb>().ChangeSpritePlanted();
 
                 if(inv.weapons[0] != null){
                     GetComponent<AnimationHandler>().animator.SetBool("IsGun", true);
@@ -62,6 +63,8 @@ public class TerroDirt : MonoBehaviour
                     GetComponent<PlayerControls>().ChangeWeaponSprite(inv.GetWeapon());
                 }
                 //Change Timer to Bomb Planted
+                FindObjectOfType<RoundTimer>().SetRemainingTime(dirtBomb.explodeTime);
+                FindObjectOfType<RoundTimer>().SwitchTimerToBombPlanted();
                 yield break;
             }
 

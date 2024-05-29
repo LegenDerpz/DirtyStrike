@@ -8,6 +8,7 @@ public class RoundTimer : MonoBehaviour
     float roundTime = 100f;
     public float remainingTime;
     public TextMeshProUGUI timer;
+    GameObject bombPlantedIndicator;
 
     public bool buyPhaseEnded = false;
     public bool timeRanOut = false;
@@ -16,6 +17,8 @@ public class RoundTimer : MonoBehaviour
     void Start()
     {
         remainingTime = buyPhaseTime;
+        bombPlantedIndicator = GameObject.Find("BombPlantedIndicator");
+        bombPlantedIndicator.SetActive(false);
     }
 
     
@@ -31,7 +34,7 @@ public class RoundTimer : MonoBehaviour
 
         timer.text = Math.Round(remainingTime, 2).ToString().Replace(".", ":");
 
-        if(remainingTime <= 0 && buyPhaseEnded){
+        if(remainingTime <= 0 && buyPhaseEnded && !FindObjectOfType<DirtBomb>().isPlanted){
             timeRanOut = true;
             timer.enabled = false;
             FindObjectOfType<GameLoop>().FindWinCondition();
@@ -52,6 +55,14 @@ public class RoundTimer : MonoBehaviour
     void buyPhaseEnd(){
         buyPhaseEnded = true;
         remainingTime = roundTime;
-        //roundStart();
+    }
+
+    public void SetRemainingTime(float time){
+        remainingTime = time;
+    }
+
+    public void SwitchTimerToBombPlanted(){
+        timer.enabled = false;
+        bombPlantedIndicator.SetActive(true);
     }
 }
