@@ -22,9 +22,12 @@ public class MultiplayerManagement : MonoBehaviour
     string team;
     string room;
 
-    void Awake(){
+    void Start()
+    {
 
-        playerObj = GameObject.FindGameObjectWithTag("Me");
+        string meUsername = PlayerPrefs.GetString("username");
+
+        playerObj = GameObject.Find(meUsername + "(Clone)");
         
         currentUsername = PlayerPrefs.GetString("username");
         team = PlayerPrefs.GetString("selectedTeam");
@@ -33,10 +36,6 @@ public class MultiplayerManagement : MonoBehaviour
         playerObj.name = currentUsername;
         playerObj.tag = team;
 
-    }
-
-    void Start()
-    {
 
         socket = new SocketIOUnity(uri, new SocketIOOptions{
             Query = new Dictionary<string, string>
@@ -77,6 +76,7 @@ public class MultiplayerManagement : MonoBehaviour
 
             });
         });
+  
     }
 
     void Update()

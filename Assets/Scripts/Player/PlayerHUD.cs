@@ -36,8 +36,8 @@ public class PlayerHUD : MonoBehaviour
     TextMeshProUGUI kills;
     
     void Start(){
-        purifierScore = GameObject.Find("Canvas/PurifierScore").GetComponent<TextMeshProUGUI>();
-        terroDirtScore = GameObject.Find("Canvas/TerroDirtScore").GetComponent<TextMeshProUGUI>();
+        purifierScore = GameObject.Find("Canvas/Purifier Score").GetComponent<TextMeshProUGUI>();
+        terroDirtScore = GameObject.Find("Canvas/TerroDirt Score").GetComponent<TextMeshProUGUI>();
         p_score = FindObjectOfType<GameLoop>().GetPurifierScore();
         t_score = FindObjectOfType<GameLoop>().GetTerroDirtScore();
 
