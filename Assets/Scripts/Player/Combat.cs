@@ -31,6 +31,13 @@ public class Combat : MonoBehaviour
     //Transform
     Vector2 lastPosition;
     public bool isMoving = false;
+    InitializePlayer initializePlayer;
+
+    string currentUsername;
+    void Start(){
+        initializePlayer = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<InitializePlayer>();
+        currentUsername = PlayerPrefs.GetString("username");
+    }
 
     void Update()
     {        
@@ -56,6 +63,12 @@ public class Combat : MonoBehaviour
                     if(inventory.IsGun() && ((inventory.GetWeapon().weaponClass == WeaponClass.Primary && inventory.primaryCurrentAmmo > 0)
                         || (inventory.GetWeapon().weaponClass == WeaponClass.Secondary && inventory.secondaryCurrentAmmo > 0))){
                         Shoot();
+                        string triggeredShoot = @"
+                        {{
+                            ""username"": ""{0}""
+                        }}";
+                        initializePlayer.Socket.Emit("bullet_transfrom", string.Format(triggeredShoot, currentUsername));
+                
                     }else if(inventory.GetWeapon().weaponType == WeaponType.Melee){
                         Attack();
                         anim.animator.SetTrigger("Attack");
@@ -115,7 +128,7 @@ public class Combat : MonoBehaviour
         Gizmos.DrawWireSphere(firePoint.position, attackRange);
     }
         
-    void Shoot(){
+    public void Shoot(){
         float bulletSpread = UnityEngine.Random.Range(0f, inventory.GetWeapon(inventory.currentWeaponIndex).bulletSpread);
         float movementSpreadModifier = inventory.GetWeapon(inventory.currentWeaponIndex).bulletSpreadMovingModifier;
 
@@ -156,6 +169,38 @@ public class Combat : MonoBehaviour
         }else if(inventory.GetWeapon().weaponClass == WeaponClass.Secondary){
             inventory.secondaryCurrentAmmo--;
         }
+    }
+
+public void Shoot2(){
+        float bulletSpread = UnityEngine.Random.Range(0f, 12f);
+        float movementSpreadModifier = 5f;
+
+        if(isMoving){
+            bulletSpread *= movementSpreadModifier;
+        }else{
+            bulletSpread = UnityEngine.Random.Range(0f, 12f);
+        }
+
+        Vector2 baseDirection = firePoint.up;
+
+        float spreadAngle = bulletSpread * Mathf.Deg2Rad;
+        Vector2 spreadOffset = UnityEngine.Random.insideUnitCircle * spreadAngle;
+
+        Vector2 targetDirection = baseDirection + spreadOffset;
+        targetDirection.Normalize();
+
+        float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
+        Quaternion spreadRotation = Quaternion.Euler(0, 0, angle-90f);
+
+        bulletPrefab.GetComponent<Bullet>().bulletOwner = GetComponent<PlayerData>().username;
+        bulletPrefab.GetComponent<Bullet>().bulletOwnerBody = GetComponent<PlayerData>();
+        bulletPrefab.GetComponent<Bullet>().spriteRenderer = bulletPrefab.GetComponent<SpriteRenderer>();
+        bulletPrefab.GetComponent<Bullet>().spriteRenderer.sprite = bulletPrefab.GetComponent<Bullet>().ChangeSprite();
+
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, spreadRotation);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+
+        rb.AddForce(targetDirection * bulletForce, ForceMode2D.Impulse);
     }
 
     IEnumerator Reload(){

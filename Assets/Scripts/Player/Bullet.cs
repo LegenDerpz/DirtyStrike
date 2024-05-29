@@ -48,19 +48,6 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void Update(){
-
-        Vector2 bulletPosition = gameObject.transform.position;
-
-        string bulletTransform = @"
-        {{
-            ""username"": ""{0}"",
-            ""bullet_position"": {{""x"": {1}, ""y"": {2}}}
-        }}";
-
-        initializePlayer.Socket.Emit("bullet_transfrom", string.Format(bulletTransform, currentUsername, bulletPosition.x, bulletPosition.y));
-    }
-
     public Vector2 GetBulletPosition(){
         return rb.position;
     }
