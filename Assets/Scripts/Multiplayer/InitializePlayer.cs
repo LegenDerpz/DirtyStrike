@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -15,27 +16,45 @@ public class InitializePlayer : MonoBehaviour
 {
 
     [SerializeField]
-    string API_URL = "http://192.168.218.201:3000/rooms/";
+    string API_URL = "http://localhost:3000/rooms/";
 
     async void Start()
     {        
-        string resPlayers = await GetPlayers();
-        List<Players> players = JsonConvert.DeserializeObject<List<Players>>(resPlayers);
         
-        foreach(var player in players){
+        string resPlayers = await GetPlayers();
+        Players[] players = JsonConvert.DeserializeObject<Players[]>(resPlayers).ToArray();
+                
+        GameObject[] TSpawns = GameObject.FindGameObjectsWithTag("TSpawn");
+        GameObject[] PSpawns = GameObject.FindGameObjectsWithTag("PSpawn");
 
-            if(PlayerPrefs.GetString("username") == player.username){
-                continue;
+        string meUsername = PlayerPrefs.GetString("username");
+
+        for(int i = 0, p = 0, t = 0; i < players.Length; i++){           
+            
+            Players player = players[i];
+
+            GameObject playerPrefab;
+
+            if(player.username == meUsername){
+                playerPrefab = Resources.Load<GameObject>("Prefabs/Me");
+            } else {
+                playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
             }
 
-            GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
             playerPrefab.name = player.username;
             playerPrefab.tag = player.team;
 
-            Instantiate(playerPrefab, new Vector2(963, 535), Quaternion.identity);
+            if(player.team.Equals("Purifier")){
+                Instantiate(playerPrefab, PSpawns[p].transform.position, Quaternion.identity);
+                p++;
+            }
+            
+            if(player.team.Equals("TerroDirt")){
+                Instantiate(playerPrefab, TSpawns[t].transform.position, Quaternion.identity);
+                t++;
+            }
 
-        }
-
+        }       
     }
 
     
