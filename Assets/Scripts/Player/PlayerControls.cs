@@ -30,6 +30,8 @@ public class PlayerControls : MonoBehaviour
     bool shopOpened = false;
 
     void Start(){
+        fieldOfView = FindObjectOfType<FieldOfView>();
+        cam = FindObjectOfType<Camera>();
         if(inventory.weapons[0] != null){
             SelectWeapon(0);
         }else{
