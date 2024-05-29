@@ -7,8 +7,9 @@ public class PlayerHUD : MonoBehaviour
 {
     public Inventory inv;
     public Combat combat;
-    public TextMeshProUGUI hpValue;
-    public Slider hpSlider;
+    TextMeshProUGUI hpValue;
+    Slider hpSlider;
+    [SerializeField]
     TextMeshProUGUI weapon;
     TextMeshProUGUI currentAmmo;
     Image ammoIcon;
@@ -26,19 +27,14 @@ public class PlayerHUD : MonoBehaviour
     //Temp
     TextMeshProUGUI kills;
     
-    void Start(){
-        purifierScore = GameObject.Find("Canvas/Purifier Score").GetComponent<TextMeshProUGUI>();
-        terroDirtScore = GameObject.Find("Canvas/TerroDirt Score").GetComponent<TextMeshProUGUI>();
-        p_score = FindObjectOfType<GameLoop>().GetPurifierScore();
-        t_score = FindObjectOfType<GameLoop>().GetTerroDirtScore();
-
-        kills = GameObject.Find("Canvas/Kills").GetComponent<TextMeshProUGUI>();
-        weapon = GameObject.Find("Canvas/Weapon").GetComponent<TextMeshProUGUI>();
-        currentAmmo = GameObject.Find("Canvas/Ammo").GetComponent<TextMeshProUGUI>();
-        ammoIcon = GameObject.Find("Canvas/Ammo/AmmoIcon").GetComponent<Image>();
-        reloadCircle = GameObject.Find("Canvas/Reloading").GetComponent<Slider>();
-        plantCircle = GameObject.Find("Canvas/PlantCircle").GetComponent<Slider>();
-        defusingCirle = GameObject.Find("Canvas/DefuseCircle").GetComponent<Slider>();
+    void Awake(){
+        hpSlider = GameObject.Find("Canvas/HealthBar").GetComponent<Slider>();
+        hpValue = GameObject.Find("Canvas/HealthBar/HP_Value").GetComponent<TextMeshProUGUI>();
+        SetHUD();
+        
+        // reloadCircle.enabled = false;
+        // plantCircle.enabled = false;
+        // defusingCirle.enabled = false;
     }
 
     void Update(){
@@ -104,5 +100,23 @@ public class PlayerHUD : MonoBehaviour
 
     public void SetHealth(float health){
         hpSlider.value = health;
+    }
+
+    void SetHUD(){
+        hpSlider = GameObject.Find("Canvas/HealthBar").GetComponent<Slider>();
+        hpValue = GameObject.Find("Canvas/HealthBar/HP_Value").GetComponent<TextMeshProUGUI>();
+
+        purifierScore = GameObject.Find("Canvas/Score/P_Score/Purifier Score").GetComponent<TextMeshProUGUI>();
+        terroDirtScore = GameObject.Find("Canvas/Score/T_Score/TerroDirt Score").GetComponent<TextMeshProUGUI>();
+        p_score = FindObjectOfType<GameLoop>().GetPurifierScore();
+        t_score = FindObjectOfType<GameLoop>().GetTerroDirtScore();
+
+        kills = GameObject.Find("Canvas/Kills").GetComponent<TextMeshProUGUI>();
+        weapon = GameObject.Find("Canvas/Weapon").GetComponent<TextMeshProUGUI>();
+        currentAmmo = GameObject.Find("Canvas/Ammo").GetComponent<TextMeshProUGUI>();
+        ammoIcon = GameObject.Find("Canvas/Ammo/AmmoIcon").GetComponent<Image>();
+        reloadCircle = GameObject.Find("Canvas/Reloading").GetComponent<Slider>();
+        plantCircle = GameObject.Find("Canvas/PlantCircle").GetComponent<Slider>();
+        defusingCirle = GameObject.Find("Canvas/DefuseCircle").GetComponent<Slider>();
     }
 }

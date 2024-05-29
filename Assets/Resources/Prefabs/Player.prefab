@@ -447,7 +447,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8653719598885068355, guid: dace2d6746023b048a7994bf22f88259, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Purifier
       objectReference: {fileID: 0}
     - target: {fileID: -8597708101219128285, guid: dace2d6746023b048a7994bf22f88259, type: 3}
       propertyPath: m_Sprite
@@ -727,9 +727,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: dace2d6746023b048a7994bf22f88259, type: 3}
       insertIndex: -1
       addedObject: {fileID: 998679827715253815}
-    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: dace2d6746023b048a7994bf22f88259, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6861955718896856123}
     - targetCorrespondingSourceObject: {fileID: -2335341641537957628, guid: dace2d6746023b048a7994bf22f88259, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1428115826548901256}
@@ -941,7 +938,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3789168875364150865}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a86c8ea3cd28c86439e4e31950d08952, type: 3}
   m_Name: 
@@ -962,12 +959,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3789168875364150865}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c824c16a1a95ec4a9c9fc0f14f811fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1000
+  health: 200
   deathEffect: {fileID: 0}
   isDead: 0
 --- !u!114 &3864856302880152284
@@ -977,7 +974,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3789168875364150865}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63570cdee309ac544af153a9b0348404, type: 3}
   m_Name: 
@@ -985,14 +982,6 @@ MonoBehaviour:
   inv: {fileID: 5426976455588591055}
   combat: {fileID: 7519689946583119864}
   weapon: {fileID: 0}
-  currentAmmo: {fileID: 0}
-  ammoIcon: {fileID: 0}
-  reloadCircle: {fileID: 0}
-  plantCircle: {fileID: 0}
-  defusingCirle: {fileID: 0}
-  purifierScore: {fileID: 0}
-  terroDirtScore: {fileID: 0}
-  kills: {fileID: 0}
 --- !u!114 &828896057827174896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1030,7 +1019,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3789168875364150865}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e810c47f4e4acb448c2bf6183675a60, type: 3}
   m_Name: 
@@ -1040,14 +1029,14 @@ MonoBehaviour:
   rb: {fileID: 7018980862823180331}
   anim: {fileID: 3465494036317006549}
   isAttacking: 0
-  waterBulletPrefab: {fileID: 6549975000145401404, guid: 10596f351e275f94dab1b2220a135453, type: 3}
+  bulletPrefab: {fileID: 6549975000145401404, guid: 10596f351e275f94dab1b2220a135453, type: 3}
   bulletForce: 30
   isReloading: 0
   reloadInterrupted: 0
   reloadProgress: 0
   layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   attackRange: 0.6
   isMoving: 0
 --- !u!114 &5426976455588591055
@@ -1057,7 +1046,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3789168875364150865}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1e5975656338d34dbc41af55d48b620, type: 3}
   m_Name: 
@@ -1089,19 +1078,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inv: {fileID: 5426976455588591055}
   playerData: {fileID: 4313685551435417662}
---- !u!114 &6861955718896856123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3789168875364150865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac7b482e9939b054584daacf6badf046, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerControls: {fileID: 8777518803486826869}
 --- !u!4 &4487939321268730017 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8270218793189394611, guid: dace2d6746023b048a7994bf22f88259, type: 3}

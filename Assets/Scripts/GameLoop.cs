@@ -15,6 +15,9 @@ public class GameLoop : MonoBehaviour
 
     void Start(){
         GameStart();
+        // GameObject.Find("Reloading").SetActive(false);
+        // GameObject.Find("PlantCircle").SetActive(false);
+        // GameObject.Find("DefuseCircle").SetActive(false);
     }
     
     public void GameStart()
