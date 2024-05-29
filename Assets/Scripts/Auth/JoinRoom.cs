@@ -10,7 +10,7 @@ public class JoinRoom : MonoBehaviour
 {
 
     [SerializeField]
-    string API_URL = "http://192.168.218.201:3000/rooms";
+    string API_URL = "http://localhost:3000/rooms";
 
     public void Username(TMP_InputField inputField){
         string username = inputField.text;
