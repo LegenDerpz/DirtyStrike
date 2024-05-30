@@ -44,6 +44,14 @@ public class PlayerControls : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.P)){
+            Time.timeScale = 0;
+        }
+
+        if(Input.GetKeyDown(KeyCode.U)){
+            Time.timeScale = 1;
+        }
+
         if(!isAiming && inventory.GetWeapon(inventory.currentWeaponIndex) != null){
             moveSpeed = inventory.GetWeapon(inventory.currentWeaponIndex).moveSpeed;
         }
