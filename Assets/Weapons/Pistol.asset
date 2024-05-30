@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
-  sprite: {fileID: -9095717837082945937, guid: 71aeb894f9deb9b46a6733a4249e5d20, type: 3}
+  sprite: {fileID: 21300000, guid: c2de1df0a61f5d94582fba9d72275d3e, type: 3}
   name: Pistol
   damage: 20
   fireRate: 3
